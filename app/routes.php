@@ -16,7 +16,7 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('/reg', 'AuthController@register');
-Route::post('/reg/create', array('before' => 'csrf', 'uses' => 'AuthController@createUser'));
+Route::get('/reg', 'UserController@register');
+Route::post('/reg/create', array('before' => 'csrf', 'uses' => 'UserController@create'));
 
-Route::get('/auth', 'AuthController@auth');
+Route::get('/auth', 'UserController@auth');

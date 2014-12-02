@@ -11,7 +11,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public $timestamps = false;
 
-	protected $fillable = array('id', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role');
+	protected $fillable = array('id', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role', 'token');
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -20,15 +20,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	public function register($data) {
+	public function register() {
+		/* Хэшируем пароль */
+		$this->password = Hash::make($this->password);
 		/* Текущая дата */
-		$data['register_date'] = date('Y-m-d H:i:s');
-
+		$this->register_date = date('Y-m-d H:i:s');
 		/* По умолчанию регистрируется студент */
-		$data['role'] = 1;
+		$this->role = 1;
 
-		$this->fill($data);
 		$this->save();
+
+		return $this->id;
+	}
+
+	public static function isTeacher() {
+
+		return Auth::user()->role === '2' ? true : false;
+
 	}
 
 }

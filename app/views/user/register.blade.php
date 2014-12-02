@@ -5,9 +5,8 @@
 	</head>
 	<body>
 		<h2>Register</h2>
-
 		<div>
-			{{ Form::open(array('action' => 'AuthController@createUser')) }}
+			{{ Form::open(array('action' => 'UserController@create')) }}
   			{{ Form::text('name') }}
   			{{ Form::text('last_name') }}
   			{{ Form::password('password') }}
