@@ -8,9 +8,13 @@ class UserController extends BaseController {
 	}
 
 	public function create() {
-		/*
-			Регистрация TODO: validations
-		*/	
+		$rules = User::$validation;
+
+		$validation = Validator::make(Input::all(), $rules);
+
+		if($validation->fails()) {
+			return Redirect::to('reg')->withErrors($validation)->withInput();
+		}
 
 		$user = new User;
 		$user->fill(Input::all());
@@ -29,7 +33,7 @@ class UserController extends BaseController {
 	public function auth() {
 		$creds = Input::all();
 
-		if(Auth::attempt(array('name' => $creds['name'], 'password' => $creds['password']), Input::has('remember'))) {
+		if(Auth::attempt(array('login' => $creds['login'], 'password' => $creds['password']), Input::has('remember'))) {
 			return Redirect::intended();
 		}
 

@@ -27,13 +27,13 @@
     <div class="container">
 
 		{{ Form::open(array('action' => 'UserController@auth', 'class' => 'form-signin')) }}
-			@if(Session::get('error'))
+			@if(Session::has('error'))
 				<p class="bg-danger" style="padding:15px;">Неверный логин или пароль</p>
 			@endif
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-			<input type="name" name="name" class="form-control" placeholder="Login" required autofocus>
-			<input type="password" name="password" class="form-control" placeholder="Password" required>
+			<input type="login" name="login" class="form-control" placeholder="Логин" required autofocus>
+			<input type="password" name="password" class="form-control" placeholder="Пароль" required>
 			<label class="checkbox">
 			  <input type="checkbox" name="remember" value="1"> Remember me
 			</label>

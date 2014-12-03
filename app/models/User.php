@@ -9,9 +9,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 
+    public static $validation = array(
+        'login' => 'required|unique:users',
+
+        'name'  => 'required|alpha',
+
+        'last_name'  => 'required|alpha',
+
+        'password'  => 'required|confirmed|min:6',
+
+    	'group_id' => 'integer'
+    );
+
 	public $timestamps = false;
 
-	protected $fillable = array('id', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role');
+	protected $fillable = array('id', 'login', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role');
 
 	/**
 	 * The attributes excluded from the model's JSON form.
