@@ -3,13 +3,8 @@
 class UserController extends BaseController {
 
 	public function register() {
-		if (!Auth::check()) {
-			$groups = Group::lists('name','id');
-			return View::make('user.register', array('groups' => $groups));	
-		}else {
-			return Redirect::to('/');
-		}
-		
+		$groups = Group::lists('name','id');
+		return View::make('user.register', array('groups' => $groups));
 	}
 
 	public function create() {
@@ -27,8 +22,23 @@ class UserController extends BaseController {
 		return Redirect::to('/');
 	}
 
+	public function sign() {
+		return View::make('user.sign');
+	}
+
 	public function auth() {
-		echo 'auth';
+		$creds = Input::all();
+
+		if(Auth::attempt(array('name' => $creds['name'], 'password' => $creds['password']), Input::has('remember'))) {
+			return Redirect::intended();
+		}
+
+		return Redirect::back()->with("error", 1);
+	}
+
+	public function logout() {
+        Auth::logout();
+        return Redirect::to('/');
 	}
 
 }

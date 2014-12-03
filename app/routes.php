@@ -13,10 +13,17 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('index');
 });
 
-Route::get('/reg', 'UserController@register');
-Route::post('/reg/create', array('before' => 'csrf', 'uses' => 'UserController@create'));
+Route::get('/logout', 'UserController@logout');
 
-Route::get('/auth', 'UserController@auth');
+Route::group(array('before' => 'guest'), function() {
+	Route::get('/reg', 'UserController@register');
+	Route::get('/sign', 'UserController@sign');
+});
+
+Route::group(array('before' => 'csrf'), function() {
+	Route::post('/reg/create', 'UserController@create');
+	Route::post('/sign/auth', 'UserController@auth');
+});
