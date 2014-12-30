@@ -16,14 +16,21 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::get('/logout', 'UserController@logout');
+Route::when('admin/*', 'admin');
+
+Route::get('logout', 'UserController@logout');
 
 Route::group(array('before' => 'guest'), function() {
-	Route::get('/reg', 'UserController@register');
-	Route::get('/sign', 'UserController@sign');
+	Route::get('reg', 'UserController@register');
+	Route::get('sign', 'UserController@sign');
 });
 
 Route::group(array('before' => 'csrf'), function() {
-	Route::post('/reg/create', 'UserController@create');
-	Route::post('/sign/auth', 'UserController@auth');
+	Route::post('reg/create', 'UserController@create');
+	Route::post('sign/auth', 'UserController@auth');
+
+	Route::post('admin/update', 'AdminController@update');
 });
+
+Route::get('admin/people', 'AdminController@people');
+Route::get('admin/edit/{user_id}', 'AdminController@edit');

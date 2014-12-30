@@ -23,7 +23,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public $timestamps = false;
 
-	protected $fillable = array('id', 'login', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role');
+	protected $fillable = array('id', 'login', 'name', 'last_name', 'password', 'group_id', 'register_date', 'role_id');
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -31,6 +31,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var array
 	 */
 	protected $hidden = array('password', 'remember_token');
+
+	public static function isTeacher() {
+
+		return Auth::user()->role_id === '2' ? true : false;
+
+	}
+
+	public static function isAdmin() {
+
+		return Auth::user()->role_id === '3' ? true : false;
+
+	}
 
 	public function register() {
 		/* Хэшируем пароль */
@@ -45,10 +57,33 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->id;
 	}
 
-	public static function isTeacher() {
+	public function updateData() {
+		DB::table('users')
+            ->where('id', $this->id)
+            ->update(array('login' => $this->login, 'name' => $this->name, 'last_name' => $this->last_name, 'group_id' => $this->group_id, 'role_id' => $this->role_id));
+	}
 
-		return Auth::user()->role === '2' ? true : false;
+	public static function getRoles() {
+		$roles = DB::table('roles')->lists('type','id');
 
+		return $roles;
+	}
+
+	public static function getDataByUserId($user_id) {
+		$user = DB::table('users')
+					->where('id', '=', $user_id)
+		            ->select('id', 'login', 'name', 'last_name', 'group_id', 'role_id')->first();
+
+		return $user;
+	}
+
+	public static function getPeoples() {
+		$users = DB::table('users')
+		            ->join('roles', 'roles.id', '=', 'users.role_id')
+		            ->join('groups', 'groups.id', '=', 'users.group_id')
+		            ->select('users.id', 'users.login', 'users.name', 'users.last_name', 'groups.name as group', 'users.register_date', 'roles.type as role')->get();
+
+		return $users;
 	}
 
 }

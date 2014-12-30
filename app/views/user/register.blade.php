@@ -42,7 +42,7 @@
 			<input type="last_name" name="last_name" class="form-control" placeholder="Фамилия" required>
 			<input type="password" name="password" class="form-control" placeholder="Пароль" required>
 			<input type="password" name="password_confirmation" class="form-control" placeholder="Повторите пароль" required>
-			{{ Form::select('group_id', $groups, null, array('class' => 'form-control last')) }}
+			{{ Form::select('group_id', $groups, null, array('class' => 'form-control')) }}
 			<button class="btn btn-lg btn-success btn-block" type="submit">Зарегистрироваться</button>
 		{{ Form::close() }}
 
