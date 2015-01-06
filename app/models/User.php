@@ -34,13 +34,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public static function isTeacher() {
 
-		return Auth::user()->role_id === '2' ? true : false;
+		if(Auth::check()) {
+			return Auth::user()->role_id === '2' ? true : false;
+		}
 
 	}
 
 	public static function isAdmin() {
 
-		return Auth::user()->role_id === '3' ? true : false;
+		if(Auth::check()) {
+			return Auth::user()->role_id === '3' ? true : false;	
+		}
 
 	}
 
