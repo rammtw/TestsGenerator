@@ -7,11 +7,11 @@
 @section('content')
     <div class="jumbotron">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-md-offset-3">
                 {{ Form::open(array('action' => 'AdminController@update')) }}
                     <input name="id" type="hidden" class="form-control" value="{{ $user->id }}">
                     <div class="form-group">
-                        <label for="login">Email</label>
+                        <label for="login">Логин</label>
                         <input name="login" type="text" class="form-control" id="login" value="{{ $user->login }}">
                     </div>
                     <div class="form-group">
@@ -23,11 +23,11 @@
                         <input name="last_name" type="text" class="form-control" id="last_name" value="{{ $user->last_name }}">
                     </div>
                     <div class="form-group">
-                        <label for="last_name">Группа</label>
+                        <label for="group">Группа</label>
                         {{ Form::select('group_id', $groups, $user->group_id, array('class' => 'form-control')) }}
                     </div>
                     <div class="form-group">
-                        <label for="last_name">Роль</label>
+                        <label for="role">Роль</label>
                         {{ Form::select('role_id', $roles, $user->role_id, array('class' => 'form-control')) }}
                     </div>
                     <button type="submit" class="btn btn-default">Отправить</button>

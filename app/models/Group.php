@@ -6,4 +6,8 @@ class Group extends Eloquent {
 
 	protected $guarded = array('id', 'name');
 
+	public function users() {
+		return $this->hasMany('User');
+	}
+
 }

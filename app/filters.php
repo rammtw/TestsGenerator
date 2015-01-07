@@ -93,3 +93,8 @@ Route::filter('admin', function()
 {
 	if (!User::isAdmin()) return Redirect::to('/');
 });
+
+Route::filter('teacher', function()
+{
+	if (!User::isTeacher()) return Redirect::to('/');
+});
