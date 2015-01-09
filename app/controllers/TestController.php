@@ -2,6 +2,15 @@
 
 class TestController extends BaseController {
 
+	/* 
+     * Страница информации
+	 */
+	public function info($test_id) {
+		$test = Test::get($test_id);
+
+		return View::make('test.info', array('test' => $test));
+	}
+
 	public function build() {
 		$subjects = Test::getSubjects();
 

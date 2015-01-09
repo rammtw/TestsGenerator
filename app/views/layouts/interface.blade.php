@@ -23,6 +23,12 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    @section('scripts')
+        <script type="text/javascript" src="../../js/jquery-1.11.2.min.js"></script>
+    @show
+
+    @yield('script')
+
   </head>
 
   <body>

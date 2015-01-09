@@ -17,6 +17,8 @@ Route::get('/', function()
 });
 
 Route::when('admin/*', 'admin');
+Route::when('test/*', 'auth');
+Route::when('q/*', 'auth');
 
 Route::get('logout', 'UserController@logout');
 
@@ -34,10 +36,18 @@ Route::group(array('before' => 'csrf'), function() {
 
 	Route::post('admin/update', 'AdminController@update');
 
+	Route::post('q/p', 'QuestionController@prepare');
+
+	Route::post('q/a/set', 'QuestionController@setAnswer');
+
 });
 
 Route::get('admin/people', 'AdminController@people');
 Route::get('admin/edit/{user_id}', 'AdminController@edit');
+
+Route::get('test/{test_id}', 'TestController@info')->where(array('test_id' => '[0-9]+'));
+
+Route::get('q/{hash}', 'QuestionController@question')->where(array('hash' => '\b[0-9a-f]{5,40}\b'));
 
 Route::group(array('before' => 'teacher'), function() {
 
