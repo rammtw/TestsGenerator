@@ -37,19 +37,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public static function isTeacher() {
-
 		if(Auth::check()) {
 			return Auth::user()->role_id === '2' ? true : false;
 		}
-
 	}
 
 	public static function isAdmin() {
-
 		if(Auth::check()) {
 			return Auth::user()->role_id === '3' ? true : false;	
 		}
-
 	}
 
 	public function register() {
@@ -66,9 +62,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function updateData() {
-		DB::table('users')
-            ->where('id', $this->id)
-            ->update(array('login' => $this->login, 'name' => $this->name, 'last_name' => $this->last_name, 'group_id' => $this->group_id, 'role_id' => $this->role_id));
+		$status = User::where('id', $this->id)
+            				->update(array('login' => $this->login, 'name' => $this->name, 'last_name' => $this->last_name, 'group_id' => $this->group_id, 'role_id' => $this->role_id));
+
+        return $status;
 	}
 
 	public static function getRoles() {
@@ -78,18 +75,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public static function getDataByUserId($user_id) {
-		$user = DB::table('users')
-					->where('id', '=', $user_id)
+		$user = User::where('id', '=', $user_id)
 		            ->select('id', 'login', 'name', 'last_name', 'group_id', 'role_id')->first();
 
 		return $user;
 	}
 
 	public static function getPeoples() {
-		$users = DB::table('users')
-		            ->join('roles', 'roles.id', '=', 'users.role_id')
-		            ->join('groups', 'groups.id', '=', 'users.group_id')
-		            ->select('users.id', 'users.login', 'users.name', 'users.last_name', 'groups.name as group', 'users.register_date', 'roles.type as role')->get();
+		$users = User::join('roles', 'roles.id', '=', 'users.role_id')
+			            ->join('groups', 'groups.id', '=', 'users.group_id')
+			            ->select('users.id', 'users.login', 'users.name', 'users.last_name', 'groups.name as group', 'users.register_date', 'roles.type as role')->get();
 
 		return $users;
 	}

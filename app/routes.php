@@ -17,53 +17,81 @@ Route::get('/', function()
 });
 
 Route::when('admin/*', 'admin');
-Route::when('test/*', 'auth');
 Route::when('q/*', 'auth');
 
 Route::get('logout', 'UserController@logout');
 
+// Гость
 Route::group(array('before' => 'guest'), function() {
 
+	// Страница регистрации
 	Route::get('reg', 'UserController@register');
+
+	// Страница авторизации
 	Route::get('sign', 'UserController@sign');
 
 });
 
 Route::group(array('before' => 'csrf'), function() {
 
-	Route::post('reg/create', 'UserController@create');
-	Route::post('sign/auth', 'UserController@auth');
+	// Регистрация
+	Route::post('u/create', 'UserController@create');
 
-	Route::post('admin/update', 'AdminController@update');
+	// Авторизация
+	Route::post('u/auth', 'UserController@auth');
 
+	// Обновить данные юзера
+	Route::post('admin/user/update', 'AdminController@update');
+
+	// Подготовить вопрос
 	Route::post('q/p', 'QuestionController@prepare');
 
+	// Установить ответ
 	Route::post('q/a/set', 'QuestionController@setAnswer');
 
 });
 
+// Список пользователей
 Route::get('admin/people', 'AdminController@people');
+
+// Редактировать юзера
 Route::get('admin/edit/{user_id}', 'AdminController@edit');
 
-Route::get('test/{test_id}', 'TestController@info')->where(array('test_id' => '[0-9]+'));
+// Инфо по тесту
+Route::get('info/{test_id}', 'TestController@info')->where(array('test_id' => '[0-9]+'));
 
+// Страница с вопросом
 Route::get('q/{hash}', 'QuestionController@question')->where(array('hash' => '\b[0-9a-f]{5,40}\b'));
 
+
+/**********************************************************************************
+ ************************ УЧИТЕЛЬСКАЯ ЧАСТЬ ***************************************
+ **********************************************************************************
+ */
 Route::group(array('before' => 'teacher'), function() {
 
+	// Мои тесты
 	Route::get('test/my', 'TestController@my');
 
+	// Создать тест
 	Route::get('test/new', 'TestController@build');
 
+	// Редактировать тест
 	Route::get('test/edit/{test_id}', 'TestController@edit');
 
+	// Создать предмет
 	Route::get('test/subject/new', function() {
 		return View::make('test.new_subject');
 	});
 
 	Route::group(array('before' => 'csrf'), function() {
+
+		// CRUD операции
 		Route::post('test/do', 'TestController@doAction');
+
+		// Создание предмета
 		Route::post('test/subject/create', 'TestController@createSubject');
+
 	});
 	
 });
