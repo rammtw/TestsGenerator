@@ -10,7 +10,7 @@ class QuestionController extends BaseController {
 	 */
 	public function prepare() {
 		if(Request::ajax()) {
-			$hash = Question::prepare(Input::get('test_id'));
+			$hash = PreparedQuestion::prepare(Input::get('test_id'));
 
 			return Response::json(array('hash' => $hash));
 		}
@@ -22,9 +22,9 @@ class QuestionController extends BaseController {
 	public function question($hash) {
 		$question = Question::getByHash($hash);
 
-		$answers = Question::shuffle_answers($question->answers);
+		$answers = PreparedQuestion::shuffleAnswers($question->answers);
 
-		Session::put('c', $hash);
+		Session::put('hash', $hash);
 
 		return View::make('test.question', array('question' => $question, 'answers' => $answers));
 	}
@@ -33,9 +33,11 @@ class QuestionController extends BaseController {
 		if(Request::ajax()) {
 			$answers = rtrim(Input::get('a'), "|");
 
-			Question::setAnswer($answers, Input::get('c'));
+			$status = PreparedQuestion::setAnswer($answers, Input::get('c'));
 
-			$this->prepare();
+			if($status == true)
+				$hash = PreparedQuestion::prepare(Input::get('test_id'));
+
 		}
 	}
 

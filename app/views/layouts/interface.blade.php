@@ -41,6 +41,9 @@
                     @if(User::isAdmin())
                         <li><a href="/admin/people">Админ панель</a></li>
                     @endif
+                    @if(User::isTeacher())
+                        <li><a href="/test/my">Тесты</a></li>
+                    @endif
                     @if(Auth::check())
                         <li><a href="/logout">Выйти</a></li>
                     @endif

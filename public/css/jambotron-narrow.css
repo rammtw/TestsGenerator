@@ -77,3 +77,8 @@ body {
     border-bottom: 0;
   }
 }
+
+.bs {
+  text-align:left;
+  margin-bottom: 15px;
+}

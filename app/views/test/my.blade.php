@@ -9,6 +9,10 @@
         @if(Session::has('message'))
             <p class="bg-success" style="padding:15px;">{{ Session::get('message') }}</p>
         @endif
+        <div class="bs">
+            <button class="btn btn-success" onclick="window.location.href='/test/new'">Новый тест</button>
+            <button class="btn btn-success" onclick="window.location.href='/test/subject/new'">Новый предмет</button>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
