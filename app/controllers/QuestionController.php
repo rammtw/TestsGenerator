@@ -20,7 +20,11 @@ class QuestionController extends BaseController {
 	 * Страница с вопросом
 	 */
 	public function question($hash) {
-		$question = Question::getByHash($hash);
+		$question = PreparedQuestion::getByHash($hash);
+
+		if(!$question) {
+			App::Abort(404);
+		}
 
 		$answers = PreparedQuestion::shuffleAnswers($question->answers);
 

@@ -2,24 +2,43 @@
 
 class PreparedQuestion extends Eloquent {
 
-	public $timestamps = false;
-
 	/* 
-	 * Подготавливает вопрос, занося его в отдельную таблицу с уникальным ключом 
+	 * Подготавливает вопросы, занося их в отдельную таблицу с уникальным ключом 
 	 */
 	public static function prepare($test_id) {
-		$question_id = Question::where('test_id', '=', $test_id)->orderBy(DB::raw('RAND()'))->pluck('id');
+		$test = Test::get($test_id);
 
-		$uniq_hash = sha1(uniqid());
+		$question_ids = Question::where('test_id', '=', $test_id)->select('id')->take($test['questions_count'])->get();
 
-		$row = PreparedQuestion::insert(array('user_id' => Auth::user()->id, 
-											'test_id' => $test_id, 
-											'question_id' => $question_id,
-											'uniq_hash' => $uniq_hash
-											)
-									);
+		$id = UserTest::make($test_id);
 
-		return $uniq_hash;
+		$hash = sha1(uniqid());
+
+		foreach ($question_ids as $value) {
+
+			$data = array(
+							'user_id' => Auth::user()->id,
+							'user_test_id' => $id,
+							'question_id' => $value->id,
+							'hash' => $hash
+						);
+
+			$row = PreparedQuestion::insert($data);
+		}
+
+		return $hash;
+	}
+
+	/*
+	 * Возвращает вопрос и ответы по hash
+	 */
+	public static function getByHash($hash) {
+		$question_id = PreparedQuestion::whereNull('a_indexes')
+											->where('user_id', '=', Auth::user()->id)
+											->where('hash', '=', $hash)
+											->pluck('question_id');
+
+		return Question::get($question_id);
 	}
 
 	public static function setAnswer($a_indexes, $hash) {
