@@ -19,6 +19,13 @@ class UserTest extends Eloquent {
 		return $this->id;
 	}
 
+	public static function finish($id) {
+		self::countUserRating($id);
+
+		return UserTest::where('id', '=', $id)
+							->update(array('finished' => 1));
+	}
+
 	public static function getByHash($hash) {
 		$test_id = UserTest::where('user_id', '=', Auth::user()->id)
 								->where('hash', '=', $hash)

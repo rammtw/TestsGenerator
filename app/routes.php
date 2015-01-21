@@ -61,7 +61,7 @@ Route::get('admin/edit/{user_id}', 'AdminController@edit');
 Route::get('info/{test_id}', array('before' => 'auth', 'uses' => 'TestController@info'))->where(array('test_id' => '[0-9]+'));
 
 // Страница с вопросом
-Route::get('q/{hash}', 'QuestionController@question')->where(array('hash' => '[0-9]+'));
+Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@question'))->where(array('id' => '[0-9]+'));
 
 
 /**********************************************************************************

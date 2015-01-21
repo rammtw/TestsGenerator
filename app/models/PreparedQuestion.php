@@ -5,7 +5,7 @@ class PreparedQuestion extends Eloquent {
 	public $timestamps = false;
 
 	/* 
-	 * Подготавливает вопросы, занося их в отдельную таблицу с уникальным ключом 
+	 * Подготавливает вопросы, занося их в отдельную таблицу
 	 */
 	public function prepare($test_id) {
 		$test = Test::get($test_id);
@@ -33,6 +33,7 @@ class PreparedQuestion extends Eloquent {
 
 	public function getRand($id) {
 		$id = PreparedQuestion::orderBy(DB::raw('RAND()'))
+											->whereNull('a_indexes')
 											->where('current', '=', 0)
 											->where('user_id', '=', Auth::user()->id)
 											->where('user_test_id', '=', $id)
@@ -50,7 +51,11 @@ class PreparedQuestion extends Eloquent {
 											->where('user_test_id', '=', $id)
 											->get(array('id', 'question_id'))->toArray();
 
-		Session::put('cur_question', $current);
+		if(!$current) {
+			return false;
+		}
+
+		Session::put('cur_question', $current[0]);
 
 		return $current[0];
 	}
@@ -69,8 +74,7 @@ class PreparedQuestion extends Eloquent {
 
 	public static function setAnswer($a_indexes) {
 		$status = PreparedQuestion::where('user_id', '=', Auth::user()->id)
-										->where('user_test_id', '=', Session::get('user_test_id'))
-										->where('question_id', '=', Session::get('question_id'))
+										->where('id', '=', Session::get('cur_question.id'))
 										->update(array('a_indexes' => $a_indexes));
 
 		return $status;

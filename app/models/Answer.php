@@ -6,11 +6,6 @@ class Answer extends Eloquent {
 
 	public static function format(&$answers, $type) {
 		foreach ($answers as $key => $answer) {
-			if($type !== 'checkbox')
-				$answers[$key]['name'] = 'answer';
-			else
-				$answers[$key]['name'] = 'answer'.$key;
-
 			if($type === 'input') {
 				$answers[$key]['answer'] = null;
 				$answers[$key]['id'] = null;
@@ -20,7 +15,7 @@ class Answer extends Eloquent {
 
 	}
 
-	public static function shuffle($list) { 
+	public static function shuffle(&$list) { 
 		if (!is_array($list)) return $list; 
 
 		$keys = array_keys($list);
@@ -30,7 +25,7 @@ class Answer extends Eloquent {
 			$random[$key] = $list[$key];
 		}
 
-		return $random;
+		return $list = $random;
 	}
 
 }

@@ -35,20 +35,27 @@ class QuestionController extends BaseController {
 		$question = Question::get($current['question_id']);
 		$answers = Question::getAnswers($current['question_id']);
 
-		$answers = Answer::shuffle($answers);
-
+		Answer::shuffle($answers);
 		Answer::format($answers, $question['type']);
 
 		return View::make('test.question', array('question' => $question, 'answers' => $answers));
 	}
 
 	public function setAnswer() {
-		$status = PreparedQuestion::setAnswer(Input::get('answer'));
+		if(empty(Input::get('a_indexes.0'))) {
+			return Redirect::back()->withErrors('Вы не ответили')->withInput();
+		}
+
+		$answers = implode(',', Input::get('a_indexes'));
+
+		$status = PreparedQuestion::setAnswer($answers);
 
 		if($status == true) {
-			PreparedQuestion::setCurrent(Session::get('user_test_id'));
+			$prep = new PreparedQuestion;
+			$prep->refreshCurrent(Session::get('cur_test'));
+			$prep->setCurrent(Session::get('cur_test'));
 
-			return Redirect::to('q/'.Session::get('user_test_id'));
+			return Redirect::to('q/'.Session::get('cur_test'));
 		}
 	}
 
