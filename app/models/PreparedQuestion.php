@@ -2,66 +2,78 @@
 
 class PreparedQuestion extends Eloquent {
 
+	public $timestamps = false;
+
 	/* 
 	 * Подготавливает вопросы, занося их в отдельную таблицу с уникальным ключом 
 	 */
-	public static function prepare($test_id) {
+	public function prepare($test_id) {
 		$test = Test::get($test_id);
 
+		$ut = new UserTest;
+		$id = $ut->make($test_id);
+
+		Session::put('cur_test', $id);
+
 		$question_ids = Question::where('test_id', '=', $test_id)->select('id')->take($test['questions_count'])->get();
-
-		$id = UserTest::make($test_id);
-
-		$hash = sha1(uniqid());
 
 		foreach ($question_ids as $value) {
 
 			$data = array(
 							'user_id' => Auth::user()->id,
 							'user_test_id' => $id,
-							'question_id' => $value->id,
-							'hash' => $hash
+							'question_id' => $value->id
 						);
 
-			$row = PreparedQuestion::insert($data);
+			PreparedQuestion::insert($data);
 		}
 
-		return $hash;
+		return $id;
+	}
+
+	public function getRand($id) {
+		$id = PreparedQuestion::orderBy(DB::raw('RAND()'))
+											->where('current', '=', 0)
+											->where('user_id', '=', Auth::user()->id)
+											->where('user_test_id', '=', $id)
+											->pluck('id');
+
+		return $id;
 	}
 
 	/*
-	 * Возвращает вопрос и ответы по hash
+	 * Возвращает вопрос
 	 */
-	public static function getByHash($hash) {
-		$question_id = PreparedQuestion::whereNull('a_indexes')
+	public function getCurrent($id) {
+		$current = PreparedQuestion::where('current', '=', 1)
 											->where('user_id', '=', Auth::user()->id)
-											->where('hash', '=', $hash)
-											->pluck('question_id');
+											->where('user_test_id', '=', $id)
+											->get(array('id', 'question_id'))->toArray();
 
-		return Question::get($question_id);
+		Session::put('cur_question', $current);
+
+		return $current[0];
 	}
 
-	public static function setAnswer($a_indexes, $hash) {
+	public function setCurrent($id) {
+		$id = $this->getRand($id);
+
+		return PreparedQuestion::where('id', '=', $id)->update(array('current' => 1));
+	}
+
+	public function refreshCurrent($id) {
+		$current = $this->getCurrent($id);
+
+		return PreparedQuestion::where('id', '=', $current['id'])->update(array('current' => 0));
+	}
+
+	public static function setAnswer($a_indexes) {
 		$status = PreparedQuestion::where('user_id', '=', Auth::user()->id)
-										->where('uniq_hash', '=', $hash)
-										->update(array('answer' => $a_indexes));
+										->where('user_test_id', '=', Session::get('user_test_id'))
+										->where('question_id', '=', Session::get('question_id'))
+										->update(array('a_indexes' => $a_indexes));
 
 		return $status;
-	}
-
-	public static function shuffleAnswers($answers) { 
-		$list = explode('|', $answers);
-
-		if (!is_array($list)) return $list; 
-
-		$keys = array_keys($list);
-		shuffle($keys);
-		$random = array();
-		foreach ($keys as $key) {
-			$random[$key] = $list[$key];
-		}
-
-		return $random;
 	}
 
 }

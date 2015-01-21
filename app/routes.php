@@ -58,10 +58,10 @@ Route::get('admin/people', 'AdminController@people');
 Route::get('admin/edit/{user_id}', 'AdminController@edit');
 
 // Инфо по тесту
-Route::get('info/{test_id}', 'TestController@info')->where(array('test_id' => '[0-9]+'));
+Route::get('info/{test_id}', array('before' => 'auth', 'uses' => 'TestController@info'))->where(array('test_id' => '[0-9]+'));
 
 // Страница с вопросом
-Route::get('q/{hash}', 'QuestionController@question')->where(array('hash' => '\b[0-9a-f]{5,40}\b'));
+Route::get('q/{hash}', 'QuestionController@question')->where(array('hash' => '[0-9]+'));
 
 
 /**********************************************************************************

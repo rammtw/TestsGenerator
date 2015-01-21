@@ -10,12 +10,13 @@ class UserTest extends Eloquent {
 								     5 => array(90, 100)
 								);
 
-	public static function make($test_id) {
-		$id = UserTest::insert(array('user_id' => Auth::user()->id,
-									'test_id' => $test_id,
-								));
+	public function make($test_id) {
+		$this->user_id = Auth::user()->id;
+		$this->test_id = $test_id;
 
-		return $id;
+		$this->save();
+
+		return $this->id;
 	}
 
 	public static function getByHash($hash) {
@@ -37,7 +38,7 @@ class UserTest extends Eloquent {
 
     	$correct = $points[0]['total_correct'];
 
-    	$c_per = floor($correct * 100 / $test['questions_count']);
+    	$c_per = round($correct * 100 / $test['questions_count']);
 
     	foreach (self::$criteria as $r => $range) {
     		foreach ($range as $i => $value) {
