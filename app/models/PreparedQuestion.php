@@ -55,7 +55,7 @@ class PreparedQuestion extends Eloquent {
 			return false;
 		}
 
-		Session::put('cur_question', $current[0]);
+		Session::put('cur_prepared', $current[0]);
 
 		return $current[0];
 	}
@@ -72,12 +72,19 @@ class PreparedQuestion extends Eloquent {
 		return PreparedQuestion::where('id', '=', $current['id'])->update(array('current' => 0));
 	}
 
-	public static function setAnswer($a_indexes) {
+	public function setAnswer($a_indexes) {
+		$answers = implode(',', $a_indexes);
+
 		$status = PreparedQuestion::where('user_id', '=', Auth::user()->id)
-										->where('id', '=', Session::get('cur_question.id'))
-										->update(array('a_indexes' => $a_indexes));
+										->where('id', '=', Session::get('cur_prepared.id'))
+										->update(array('a_indexes' => $answers));
 
 		return $status;
+	}
+
+	public function getAnswered($id) {
+		return PreparedQuestion::whereNotNull('a_indexes')
+									->where('user_test_id', '=', $id)->lists('a_indexes', 'question_id');
 	}
 
 }

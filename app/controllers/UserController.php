@@ -45,10 +45,10 @@ class UserController extends BaseController {
         return Redirect::to('/');
 	}
 
-	public function result() {
+	public function passed() {
 		$tests = UserTest::getFinished(Auth::user()->id);
 
-		return View::make('user.result', array('tests' => $tests));
+		return View::make('user.passed', array('tests' => $tests));
 	}
 
 }

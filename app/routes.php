@@ -66,7 +66,7 @@ Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@questi
 
 Route::group(array('before' => 'auth'), function() {
 
-	Route::get('u/result', 'UserController@result');
+	Route::get('u/passed', 'UserController@passed');
 
 });
 

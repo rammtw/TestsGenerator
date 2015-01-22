@@ -29,7 +29,10 @@ class QuestionController extends BaseController {
 		$current = $prep->getCurrent($id);
 
 		if(!$current) {
-			App::Abort(404);
+			$ut = new UserTest;
+			$ut->finish(Session::get('cur_test'));
+
+			return Redirect::to('u/passed');
 		}
 
 		$question = Question::get($current['question_id']);
@@ -46,12 +49,11 @@ class QuestionController extends BaseController {
 			return Redirect::back()->withErrors('Вы не ответили')->withInput();
 		}
 
-		$answers = implode(',', Input::get('a_indexes'));
+		$prep = new PreparedQuestion;
 
-		$status = PreparedQuestion::setAnswer($answers);
+		$status = $prep->setAnswer(Input::get('a_indexes'));
 
 		if($status == true) {
-			$prep = new PreparedQuestion;
 			$prep->refreshCurrent(Session::get('cur_test'));
 			$prep->setCurrent(Session::get('cur_test'));
 
