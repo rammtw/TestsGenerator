@@ -32,8 +32,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	public function group() {
-		return $this->belongsTo('Group');
+	public static function isStudent() {
+		if(Auth::check()) {
+			return Auth::user()->role_id === '1' ? true : false;
+		}
 	}
 
 	public static function isTeacher() {

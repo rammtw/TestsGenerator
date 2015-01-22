@@ -20,7 +20,9 @@
 
                 @foreach($answers as $key => $answer)
                     <div class="{{ $question->type }}">
-                        <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['id']}}"> {{$answer['answer']}}
+                        <label>
+                            <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['id']}}"> {{$answer['answer']}}
+                        </label>
                     </div>
                 @endforeach
 

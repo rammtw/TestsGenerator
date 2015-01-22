@@ -61,4 +61,9 @@ class UserTest extends Eloquent {
 
 	}
 
+	public static function getFinished($id) {
+		return UserTest::where('user_tests.user_id', '=', $id)->join('tests as t', 't.id', '=', 'user_tests.test_id')
+											->get(array('t.name', 'user_tests.*'));
+	}
+
 }

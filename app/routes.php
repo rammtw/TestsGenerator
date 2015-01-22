@@ -64,8 +64,14 @@ Route::get('info/{test_id}', array('before' => 'auth', 'uses' => 'TestController
 Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@question'))->where(array('id' => '[0-9]+'));
 
 
+Route::group(array('before' => 'auth'), function() {
+
+	Route::get('u/result', 'UserController@result');
+
+});
+
 /**********************************************************************************
- ************************ УЧИТЕЛЬСКАЯ ЧАСТЬ ***************************************
+ ************************ TEACHER ZONE ********************************************
  **********************************************************************************
  */
 Route::group(array('before' => 'teacher'), function() {

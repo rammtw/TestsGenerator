@@ -82,3 +82,7 @@ body {
   text-align:left;
   margin-bottom: 15px;
 }
+
+table th {
+  text-align:center;
+}
