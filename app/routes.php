@@ -85,6 +85,10 @@ Route::group(array('before' => 'teacher'), function() {
 	// Редактировать тест
 	Route::get('test/edit/{test_id}', 'TestController@edit');
 
+	Route::get('test/q/new', function() {
+		return View::make('test.new_question');
+	});
+
 	// Создать предмет
 	Route::get('test/subject/new', function() {
 		return View::make('test.new_subject');
@@ -97,6 +101,8 @@ Route::group(array('before' => 'teacher'), function() {
 
 		// Создание предмета
 		Route::post('test/subject/create', 'TestController@createSubject');
+
+		Route::post('test/q/create', 'QuestionController@create');
 
 	});
 	

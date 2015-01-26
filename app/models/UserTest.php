@@ -46,7 +46,7 @@ class UserTest extends Eloquent {
 
     	$correct = $points[0]['total_correct'];
 
-    	$c_per = round($correct * 100 / $test['questions_count']);
+    	$c_per = round($correct * 100 / $test['max_points']);
 
     	foreach (self::$criteria as $r => $range) {
     		foreach ($range as $i => $value) {

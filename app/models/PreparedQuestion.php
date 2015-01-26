@@ -69,7 +69,12 @@ class PreparedQuestion extends Eloquent {
 	public function refreshCurrent($id) {
 		$current = $this->getCurrent($id);
 
-		return PreparedQuestion::where('id', '=', $current['id'])->update(array('current' => 0));
+		$c = PreparedQuestion::where('id', '=', $current['id'])->update(array('current' => 0));
+
+		if($c) {
+			return $this->setCurrent($id);
+		}
+		return false;
 	}
 
 	public function setAnswer($a_indexes) {

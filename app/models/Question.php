@@ -21,4 +21,10 @@ class Question extends Eloquent {
 		return json_decode($answers, true);
 	}
 
+	public function create() {
+		$q = new Question;
+
+		$q->create(Input::all());
+	}
+
 }

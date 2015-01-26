@@ -5,6 +5,10 @@
 */
 class QuestionController extends BaseController {
 
+	public function create() {
+		var_dump(Input::all());
+	}
+
 	/*
      * AJAX request, JSONresponse: hash 
 	 */
@@ -55,7 +59,6 @@ class QuestionController extends BaseController {
 
 		if($status == true) {
 			$prep->refreshCurrent(Session::get('cur_test'));
-			$prep->setCurrent(Session::get('cur_test'));
 
 			return Redirect::to('q/'.Session::get('cur_test'));
 		}

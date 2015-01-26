@@ -58,8 +58,8 @@ class TestController extends BaseController {
 		return Redirect::to('test/my')->with('message', 'Тест успешно создан!');
 	}
 
-	public function edit($user_id) {
-		$test = Test::get($user_id);
+	public function edit($id) {
+		$test = Test::get($id);
 		$subjects = Test::getSubjects();
 
 		return View::make('test.edit', array('test' => $test, 'subjects' => $subjects));

@@ -24,7 +24,7 @@
                         <label for="subject">Предмет</label>
                         {{ Form::select('subject_id', $subjects, null, array('class' => 'form-control')) }}
                     </div>
-                    <button type="submit" class="btn btn-default" name="action" value="create">Отправить</button>
+                    <button type="submit" class="btn btn-success" name="action" value="create">Сохранить</button>
                 {{ Form::close() }}
             </div>
         </div>

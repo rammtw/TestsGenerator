@@ -14,7 +14,7 @@
                     @endforeach
                 </div>
             @endif
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-8 col-md-offset-2">
                 {{ Form::open(array('action' => 'TestController@doAction')) }}
                     <input name="id" type="hidden" class="form-control" value="{{ $test->id }}">
                     <div class="form-group">
@@ -25,8 +25,9 @@
                         <label for="subject">Предмет</label>
                         {{ Form::select('subject_id', $subjects, $test->subject_id, array('class' => 'form-control')) }}
                     </div>
-                    <button type="submit" class="btn btn-success" name="action" value="update">Отправить</button>
+                    <button type="submit" class="btn btn-success" name="action" value="update">Сохранить</button>
                     <button type="submit" class="btn btn-danger" name="action" value="delete">Удалить тест</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='/test/q/{{ $test->id }}'">Новый вопрос</button>
                 {{ Form::close() }}
             </div>
         </div>
