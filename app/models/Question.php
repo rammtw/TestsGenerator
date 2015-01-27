@@ -2,6 +2,10 @@
 
 class Question extends Eloquent {
 
+	public $timestamps = false;
+
+	protected $fillable = array('id', 'test_id', 'title', 'type');
+
 	public function answers() {
 		return $this->hasMany('Answer');
 	}
@@ -21,10 +25,12 @@ class Question extends Eloquent {
 		return json_decode($answers, true);
 	}
 
-	public function create() {
-		$q = new Question;
+	public function make($test_id) {
+		$this->test_id = $test_id;
 
-		$q->create(Input::all());
+		$this->save();
+
+		return $this->id;
 	}
 
 }

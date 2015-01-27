@@ -8,11 +8,30 @@ class QuestionController extends BaseController {
 	public function make($test_id) {
 		$test = Test::get($test_id);
 
+		Session::flash('test_id', $test->id);
+
 		return View::make('test.new_question', array('test' => $test));
 	}
 
 	public function create() {
-		var_dump(Input::all());
+		if(Request::ajax()) {
+			$q = new Question;
+
+			$test_id = Session::get('test_id');
+
+			$q->fill(Input::all());
+			$q_id = $q->make($test_id);
+
+			foreach (Input::get('answers') as $key => $answer) {
+				$a = new Answer;
+				$a_id = $a->make($q_id, $answer);
+
+				if($key+1 == Input::get('r_index')) {
+					$status = Answer::setRight($a_id);
+				}
+			}
+			return $status;
+		}
 	}
 
 	/*

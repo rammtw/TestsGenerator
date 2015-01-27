@@ -4,6 +4,23 @@ class Answer extends Eloquent {
 
 	public $timestamps = false;
 
+	protected $fillable = array('id', 'question_id', 'answer', 'r');
+
+	public function make($q_id, $answer) {
+		$this->question_id = $q_id;
+
+		$this->answer = $answer;
+
+		$this->save();
+
+		return $this->id;
+	}
+
+	public static function setRight($index) {
+		return Answer::where('id', '=', $index)
+						->update(array('r' => 1));
+	}
+
 	public static function format(&$answers, $type) {
 		foreach ($answers as $key => $answer) {
 			if($type === 'input') {

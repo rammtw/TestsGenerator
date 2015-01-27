@@ -14,17 +14,17 @@
                         <input type="text" class="form-control" id="title" placeholder="Введите сюда название вопроса">
                     </div>
                     <div class="form-group">
-                    	<label for="answer-count">Количество ответов</label>
-                    	<input type="text" class="form-control" id="answer-count" placeholder="Количество ответов">
-                    </div>
-                    <div class="form-group">
                         <label for="type">Тип ответов</label>
-                        <select class="form-control" id="type" id="type">
+                        <select class="form-control" id="type">
                         	<option disabled>Выберите тип</option>
                             <option value="input">Текст</option>
                             <option value="radio">Один из нескольких</option>
-                            <option value="checkbox">Несколько вариантов</option>
+                            <option value="checkbox">Несколько правильных</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer-count">Количество вариантов ответов</label>
+                        <input type="text" class="form-control" id="answer-count" placeholder="Количество ответов" disabled value="1">
                     </div>
                     <button type="button" id="next-step" class="btn btn-success btn-sm" disabled>Далее</button>
                 </form>
@@ -35,7 +35,7 @@
             				Номер правильного ответа:
             			</label>
             			<div class="col-sm-3">
-            				<input type="text" class="form-control r-index">
+            				<input type="text" class="form-control r-index" disabled value="1">
             			</div>
             		</div>
             		<button id="save" class="btn btn-success btn-sm" disabled>Сохранить</button>
@@ -46,54 +46,5 @@
 @stop
 
 @section('script')
-<script>
-    $('#next-step').click(function(){
-    	$('#question-form').fadeOut(200);
-    	$('#question').text($("#title").val());
-    	$('.form-horizontal').fadeIn(200);
-    	var count = $('#answer-count').val();
-    	var type = $('#type').val();
-
-    	for(i = parseInt(count); i > 0; i--) {
-    		$('.r-num').after('<div class="form-group"><label class="col-sm-2 control-label">' + i + '</label><div class="col-sm-10"><input type="text" class="form-control answers"></div></div>');
-    	}
-    });
-
-	function doCheck(){
-	    var allFilled = true;
-	    $(this).find('input').each(function(){
-	        if($(this).val() == ''){
-	            allFilled = false;
-	            return false;
-	        }
-	    });
-	    $(this).find("button").prop('disabled', !allFilled);
-	}
-
-	$('#question-form').keyup(doCheck).focusout(doCheck);
-	$('.form-horizontal').keyup(doCheck).focusout(doCheck);
-
-    $('#save').click(function (){
-    	var data = {
-    		_token: "{{ csrf_token() }}",
-    		title: $('#title').val(),
-    		type: $('#type').val(),
-    		answers: [],
-    		r_index: $('.r-index').val()
-    	}
-
-    	$('.answers').each(function(){
-    		data["answers"].push($(this).val());
-    	});
-
-        $.ajax({
-            type: "POST",
-            url: "/test/q/create",
-            data: data,
-            success: function(r) {
-
-            }
-        }, "json");
-    });
-</script>
+<script type="text/javascript" src="../../js/n_question.js"></script>
 @stop
