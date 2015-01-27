@@ -4,54 +4,30 @@
     Тестирование
 @stop
 
-@section('script')
-    <script type="text/javascript">
-        var next = function () {
-            var answers = "";
-            $(".answer").each(function () {
-                var ischecked = $(this).is(":checked");
-                if (ischecked) {
-                    answers += $(this).val() + "|";
-                }
-            });
-            var dataString = 'a=' + answers + '&c={{ Session::get('hash') }}' + '&_token={{ csrf_token() }}';
-            $.ajax({
-                type: "POST",
-                url : "/q/a/set",
-                data : dataString,
-                success : function(data){
-                    // window.location.href="/q/" + data.hash;
-                }
-            },"json");
-        }
-    </script>
-@stop
-
 @section('content')
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-9 col-md-offset-2">
-                <p>{{ $question->title }}</p>
-                @if($question->type === 'input')
-                    <input type="text" class="form-control" class="answer" name="answer">
-                @elseif($question->type === 'radio')
-                    @foreach($answers as $key => $answer)
-                        <div class="radio">
-                            <label>
-                                <input type="radio" class="answer" name="answer" value="{{ $key }}"> {{ $answer }}
-                            <label>
-                        </div>
-                    @endforeach
-                @elseif($question->type === 'checkbox')
-                    @foreach($answers as $key => $answer)
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="answer" name="v{{ $key }}" value="{{ $key }}"> {{ $answer }}
-                            </label>
-                        </div>
-                    @endforeach
+                @if($errors->all())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
                 @endif
-                    <button type="button" class="btn btn-success" style="margin-top:25px;" onclick="next();">Далее</button>
+                {{ Form::open(array('action' => 'QuestionController@setAnswer')) }}
+                <p>{{ $question->title }}</p>
+
+                @foreach($answers as $key => $answer)
+                    <div class="{{ $question->type }}">
+                        <label>
+                            <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['id']}}"> {{$answer['answer']}}
+                        </label>
+                    </div>
+                @endforeach
+
+                <button type="submit" class="btn btn-success" style="margin-top:25px;">Далее</button>
+                {{ Form::close() }}
             </div>
         </div>
     </div>

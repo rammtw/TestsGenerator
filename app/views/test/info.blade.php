@@ -13,7 +13,7 @@
 	            url : "/q/p",
 	            data : dataString,
 	            success : function(data){
-	                window.location.href="/q/" + data.hash;
+	                window.location.href="/q/" + data.id;
 	            }
 	        },"json");
 		}

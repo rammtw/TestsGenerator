@@ -8,7 +8,6 @@
           <p><a class="btn btn-lg btn-success sign" href="/sign" role="button">Sign up today</a></p>
         @endif
     </div>
-
     <div class="row marketing">
         <div class="col-lg-6">
             <h4>Subheading</h4>

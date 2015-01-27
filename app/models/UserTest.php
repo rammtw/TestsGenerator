@@ -10,12 +10,21 @@ class UserTest extends Eloquent {
 								     5 => array(90, 100)
 								);
 
-	public static function make($test_id) {
-		$id = UserTest::insert(array('user_id' => Auth::user()->id,
-									'test_id' => $test_id,
-								));
+	public function make($test_id) {
+		$this->user_id = Auth::user()->id;
+		$this->test_id = $test_id;
 
-		return $id;
+		$this->save();
+
+		return $this->id;
+	}
+
+	public function finish($id) {
+		$this->countTotalInTest($id);
+		$this->countUserRating($id);
+
+		return UserTest::where('id', '=', $id)
+							->update(array('finished' => 1));
 	}
 
 	public static function getByHash($hash) {
@@ -30,14 +39,14 @@ class UserTest extends Eloquent {
 		return UserTest::where('user_id', '=', Auth::user()->id)->where('id', '=', $id)->update(array('rating' => $rating));
 	}
 
-    public static function countUserRating($id) {
+    public function countUserRating($id) {
     	$points = UserTest::where('id', '=', $id)->get(array('test_id', 'total_correct'))->toArray();
 
     	$test = Test::get($points[0]['test_id']);
 
     	$correct = $points[0]['total_correct'];
 
-    	$c_per = floor($correct * 100 / $test['questions_count']);
+    	$c_per = round($correct * 100 / $test['max_points']);
 
     	foreach (self::$criteria as $r => $range) {
     		foreach ($range as $i => $value) {
@@ -49,8 +58,44 @@ class UserTest extends Eloquent {
     	return self::updateUserRating($id, $rating);
 	}
 
-	public function countTotalInTest() {
+	public function countTotalInTest($id) {
+		$prep = new PreparedQuestion;
 
+		$answered = $prep->getAnswered($id);
+
+		foreach ($answered as $key => $answer) {
+			$a[$key] = explode(',', $answer);
+		}
+
+		foreach ($a as $key => $value) {
+			foreach ($value as $key2 => $value2) {
+				$r = Answer::where('question_id', '=', $key)
+								->where('id', '=', $value2)
+								->orWhere('answer', '=', $value2)
+								->pluck('r');
+				if($r == true)
+					$this->setCorrect();
+				else
+					$this->setInCorrect();
+			}
+		}
+	}
+
+	public function setCorrect() {
+		return UserTest::where('id', '=', Session::get('cur_test'))
+							->increment('total_correct');
+	}
+
+	public function setInCorrect() {
+		return UserTest::where('id', '=', Session::get('cur_test'))
+							->increment('total_incorrect');
+	}
+
+	public static function getFinished($id) {
+		return UserTest::orderBy('user_tests.created_at', 'desc')
+									->where('user_tests.user_id', '=', $id)
+									->join('tests as t', 't.id', '=', 'user_tests.test_id')
+									->get(array('t.name', 'user_tests.*'));
 	}
 
 }
