@@ -28,24 +28,29 @@ class QuestionController extends BaseController {
 
 				if($key+1 == Input::get('r_index')) {
 					$status = Answer::setRight($a_id);
+					Test::incAnswerPoints($test_id);
 				}
 			}
-			return $status;
+			return Response::json(array('response' => 'ok'));
 		}
 	}
 
 	/*
-     * AJAX request, JSONresponse: hash 
+     * AJAX request, JSONresponse: id 
 	 */
 	public function prepare() {
 		if(Request::ajax()) {
 
+			if(!Test::isSolved(Session::get('test_id'))) {
+				return Response::json(array('response' => 'error', 'msg' => 'Извините, тест еще не подготовлен.'));
+			}
+
 			$prep = new PreparedQuestion;
 
-			$id = $prep->prepare(Input::get('test_id'));
+			$id = $prep->prepare(Session::get('test_id'));
 			$prep->setCurrent($id);
 
-			return Response::json(array('id' => $id));
+			return Response::json(array('response' => 'ok', 'id' => $id));
 		}
 	}
 

@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <title>@yield('title', 'Главная')</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap core CSS -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
 

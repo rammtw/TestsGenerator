@@ -28,7 +28,9 @@ class Question extends Eloquent {
 	public function make($test_id) {
 		$this->test_id = $test_id;
 
-		$this->save();
+		if($this->save()) {
+			Test::incQuestionCount($test_id);
+		}
 
 		return $this->id;
 	}

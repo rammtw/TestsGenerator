@@ -26,6 +26,15 @@ class Test extends Eloquent {
 		return $test;
 	}
 
+	public static function isSolved($id) {
+		$test = self::get($id);
+
+		if($test['questions_count'] > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	public static function getAll() {
 		$tests = DB::table('tests')
 					->orderBy('created_date', 'DESC')
@@ -53,5 +62,13 @@ class Test extends Eloquent {
 	public function createSubject() {
 		DB::table('subjects')
             ->insert(array('name' => $this->name));
+	}
+
+	public static function incQuestionCount($id) {
+		return self::where('id', '=', $id)->increment('questions_count');
+	}
+
+	public static function incAnswerPoints($id) {
+		return self::where('id', '=', $id)->increment('max_points');
 	}
 }

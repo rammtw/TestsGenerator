@@ -40,6 +40,11 @@ function doCheck(){
 
 $('.r-index').keyup(function(){
     var num = parseInt($(this).val());
+    var allowed_num = $('#answer-count').val();
+
+    if(!Number.isInteger(num) || num > allowed_num) {
+        $(this).val('');
+    }
 
     $('.answers').each(function(i){
         $(this).css("border-color", "#FF8B8B");
@@ -52,6 +57,12 @@ $('.r-index').keyup(function(){
 
 $('#question-form').keyup(doCheck).focusout(doCheck);
 $('.form-horizontal').keyup(doCheck).focusout(doCheck);
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 $('#save').click(function (){
     var data = {
@@ -70,8 +81,10 @@ $('#save').click(function (){
         type: "POST",
         url: "/test/q/create",
         data: data,
-        success: function(r) {
-
+        success: function(data) {
+            if(data.response == 'ok') {
+                $('.col-md-10').html('<button type="button" class="btn btn-primary btn-sm" onclick="location.reload();" style="margin-right:10px;">Добавить еще</button><button type="button" class="btn btn-sm" onclick="window.location.href=\'/test/my\'">Перейти к списку тестов</button>');
+            }
         }
     }, "json");
 });
