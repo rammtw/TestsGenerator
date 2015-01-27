@@ -85,9 +85,7 @@ Route::group(array('before' => 'teacher'), function() {
 	// Редактировать тест
 	Route::get('test/edit/{test_id}', 'TestController@edit');
 
-	Route::get('test/q/new', function() {
-		return View::make('test.new_question');
-	});
+	Route::get('test/q/{test_id}', 'QuestionController@make');
 
 	// Создать предмет
 	Route::get('test/subject/new', function() {

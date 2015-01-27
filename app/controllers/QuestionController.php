@@ -5,6 +5,12 @@
 */
 class QuestionController extends BaseController {
 
+	public function make($test_id) {
+		$test = Test::get($test_id);
+
+		return View::make('test.new_question', array('test' => $test));
+	}
+
 	public function create() {
 		var_dump(Input::all());
 	}

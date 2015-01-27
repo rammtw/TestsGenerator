@@ -7,13 +7,6 @@
 @section('content')
     <div class="jumbotron">
         <div class="row">
-            @if($errors->all())
-                <div class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
             <div class="col-md-10 col-md-offset-1">
                 <form id="question-form">
                     <div class="form-group">
@@ -98,7 +91,7 @@
             url: "/test/q/create",
             data: data,
             success: function(r) {
-            	console.log('ye');
+
             }
         }, "json");
     });
