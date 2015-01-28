@@ -23,13 +23,15 @@ class QuestionController extends BaseController {
 			$q_id = $q->make($test_id);
 
 			foreach (Input::get('answers') as $key => $answer) {
+
 				$a = new Answer;
 				$a_id = $a->make($q_id, $answer);
 
-				if($key+1 == Input::get('r_index')) {
+				if(in_array($key, Input::get('r_indexes'))) {
 					$status = Answer::setRight($a_id);
 					Test::incAnswerPoints($test_id);
 				}
+
 			}
 			return Response::json(array('response' => 'ok'));
 		}
@@ -58,6 +60,10 @@ class QuestionController extends BaseController {
 	 * Страница с вопросом
 	 */
 	public function question($id) {
+		if(Session::get('cur_test') != $id ) {
+			App::abort(404);
+		}
+
 		$prep = new PreparedQuestion;
 
 		$current = $prep->getCurrent($id);
@@ -66,7 +72,7 @@ class QuestionController extends BaseController {
 			$ut = new UserTest;
 			$ut->finish(Session::get('cur_test'));
 
-			return Redirect::to('u/passed');
+			return Redirect::to('u/finished');
 		}
 
 		$question = Question::get($current['question_id']);

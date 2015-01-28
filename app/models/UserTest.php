@@ -23,6 +23,9 @@ class UserTest extends Eloquent {
 		$this->countTotalInTest($id);
 		$this->countUserRating($id);
 
+		Session::forget('cur_test');
+		Session::forget('cur_prepared');
+
 		return UserTest::where('id', '=', $id)
 							->update(array('finished' => 1));
 	}

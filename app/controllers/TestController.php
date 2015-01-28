@@ -8,6 +8,10 @@ class TestController extends BaseController {
 	public function info($test_id) {
 		$test = Test::get($test_id);
 
+		if(!$test){
+			App::abort(404);
+		}
+
 		Session::flash('test_id', $test->id);
 
 		return View::make('test.info', array('test' => $test));

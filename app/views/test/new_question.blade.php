@@ -31,12 +31,9 @@
                 <div class="form-horizontal" style="display:none;">
                 	<p id="question"></p>
             		<div class="form-group r-num">
-            			<label class="col-sm-7 control-label">
-            				Номер правильного ответа:
+            			<label class="col-sm-10 control-label">
+            				Нажмите на переключатель слева, если ответ правильный
             			</label>
-            			<div class="col-sm-3">
-            				<input type="text" class="form-control r-index" disabled value="1">
-            			</div>
             		</div>
             		<button id="save" class="btn btn-success btn-sm" disabled>Сохранить</button>
       	        </div>

@@ -6,7 +6,9 @@
 class AdminController extends BaseController {
 
 	public function people() {
-		$users = User::getPeoples();
+		$users = Cache::remember('users', 1, function () {
+			return User::getPeoples();
+		});
 
 		return View::make('admin.people', array('users' => $users));
 	}

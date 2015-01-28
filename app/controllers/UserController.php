@@ -41,14 +41,16 @@ class UserController extends BaseController {
 	}
 
 	public function logout() {
-        Auth::logout();
-        return Redirect::to('/');
+		Auth::logout();
+		return Redirect::to('/');
 	}
 
-	public function passed() {
-		$tests = UserTest::getFinished(Auth::user()->id);
+	public function finished() {
+		$tests = Cache::remember('tests', 1, function () {
+			return UserTest::getFinished(Auth::user()->id);
+		});
 
-		return View::make('user.passed', array('tests' => $tests));
+		return View::make('user.finished', array('tests' => $tests));
 	}
 
 }

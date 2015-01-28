@@ -15,15 +15,22 @@ $('#next-step').click(function(){
     $('#question-form').fadeOut(200);
     $('#question').text($("#title").val());
     $('.form-horizontal').fadeIn(200);
+
     var count = $('#answer-count').val();
     var type = $('#type').val();
-
-    if(type !== 'input') {
-        $('.r-index').prop("disabled", false).val('');
+    var status = 'checked disabled';
+    var types = {
+        "input" : "checkbox",
+        "checkbox" : "checkbox",
+        "radio" : "radio"
     }
 
-    for(i = parseInt(count); i > 0; i--) {
-        $('.r-num').after('<div class="form-group"><label class="col-sm-2 control-label">' + i + '</label><div class="col-sm-10"><input type="text" class="form-control answers"></div></div>');
+    if(type !== 'input') {
+        status = '';
+    }
+
+    for(i = parseInt(count)-1; i >= 0; i--) {
+        $('.r-num').after('<div class="form-group"><label class="col-sm-2 control-label"><input class="r-index" ' + status + ' type="' + types[type] + '" name="check" value="' + i + '"></label><div class="col-sm-10"><input type="text" class="form-control answers"></div></div>');
     }
 });
 
@@ -37,23 +44,6 @@ function doCheck(){
     });
     $(this).find("button").prop('disabled', !allFilled);
 }
-
-$('.r-index').keyup(function(){
-    var num = parseInt($(this).val());
-    var allowed_num = $('#answer-count').val();
-
-    if(!Number.isInteger(num) || num > allowed_num) {
-        $(this).val('');
-    }
-
-    $('.answers').each(function(i){
-        $(this).css("border-color", "#FF8B8B");
-
-        if(num ===  i+1) {
-            $(this).css("border-color", "green");
-        }
-    });
-});
 
 $('#question-form').keyup(doCheck).focusout(doCheck);
 $('.form-horizontal').keyup(doCheck).focusout(doCheck);
@@ -69,9 +59,13 @@ $('#save').click(function (){
         _token: "{{ csrf_token() }}",
         title: $('#title').val(),
         type: $('#type').val(),
-        r_index: $('.r-index').val(),
+        r_indexes: [],
         answers: []
     }
+
+    $('.r-index:checked').each(function(e){
+        data["r_indexes"].push($(this).val());
+    });
 
     $('.answers').each(function(){
         data["answers"].push($(this).val());
