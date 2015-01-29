@@ -6,11 +6,11 @@
 class QuestionController extends BaseController {
 
 	public function make($test_id) {
-		$test = Test::get($test_id);
+		$test_id = Test::find($test_id)->pluck('id');
 
-		Session::flash('test_id', $test->id);
+		Session::flash('test_id', $test_id);
 
-		return View::make('test.new_question', array('test' => $test));
+		return View::make('question.new');
 	}
 
 	public function create() {
@@ -81,7 +81,7 @@ class QuestionController extends BaseController {
 		Answer::shuffle($answers);
 		Answer::format($answers, $question['type']);
 
-		return View::make('test.question', array('question' => $question, 'answers' => $answers));
+		return View::make('question.index', array('question' => $question, 'answers' => $answers));
 	}
 
 	public function setAnswer() {

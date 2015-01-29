@@ -18,7 +18,7 @@
                     </thead>
                     @foreach ($subjects as $key => $subject)
                         <tr>
-                            <td>{{ $key }}</td>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $subject->name }}</td>
                             <td>{{ $subject->tests()->count() }}</td>
                         </tr>

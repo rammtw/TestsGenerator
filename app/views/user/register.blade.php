@@ -15,7 +15,6 @@
 
 	{{ Form::open(array('action' => 'UserController@create', 'class' => 'form-signin')) }}
 		<h2 class="form-signin-heading">Регистрация</h2>
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="login" name="login" class="form-control" placeholder="Логин" required autofocus>
 		<input type="name" name="name" class="form-control" placeholder="Имя" required>
 		<input type="last_name" name="last_name" class="form-control" placeholder="Фамилия" required>

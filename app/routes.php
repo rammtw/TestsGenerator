@@ -16,12 +16,15 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::when('admin/*', 'admin');
-Route::when('q/*', 'auth');
-
 Route::get('logout', 'UserController@logout');
 
-// Гость
+Route::when('*', 'csrf', array('post'));
+
+/**********************************************************************************
+ ************************ GUEST ZONE **********************************************
+ **********************************************************************************
+ */
+
 Route::group(array('before' => 'guest'), function() {
 
 	// Страница регистрации
@@ -30,18 +33,30 @@ Route::group(array('before' => 'guest'), function() {
 	// Страница авторизации
 	Route::get('sign', 'UserController@sign');
 
-});
-
-Route::group(array('before' => 'csrf'), function() {
-
 	// Регистрация
 	Route::post('u/create', 'UserController@create');
 
 	// Авторизация
 	Route::post('u/auth', 'UserController@auth');
 
-	// Обновить данные юзера
-	Route::post('admin/user/update', 'AdminController@update');
+});
+
+/**********************************************************************************
+ ************************ AUTH ZONE ***********************************************
+ **********************************************************************************
+ */
+
+Route::group(array('before' => 'auth'), function() {
+
+	// Инфо по тесту
+	Route::get('test/{test_id}', 'TestController@index')->where(array('test_id' => '[0-9]+'));
+
+	Route::get('test/subject/all', 'TestController@allSubjects');
+
+	Route::get('u/finished', 'UserController@finished');
+
+	// Страница с вопросом
+	Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@question'))->where(array('id' => '[0-9]+'));
 
 	// Подготовить вопрос
 	Route::post('q/p', 'QuestionController@prepare');
@@ -51,34 +66,14 @@ Route::group(array('before' => 'csrf'), function() {
 
 });
 
-// Список пользователей
-Route::get('admin/people', 'AdminController@people');
-
-// Редактировать юзера
-Route::get('admin/edit/{user_id}', 'AdminController@edit');
-
-// Инфо по тесту
-Route::get('info/{test_id}', array('before' => 'auth', 'uses' => 'TestController@info'))->where(array('test_id' => '[0-9]+'));
-
-// Страница с вопросом
-Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@question'))->where(array('id' => '[0-9]+'));
-
-
-Route::group(array('before' => 'auth'), function() {
-
-	Route::get('u/finished', 'UserController@finished');
-
-});
-
-Route::get('subject/all', 'TestController@allSubjects');
 
 /**********************************************************************************
  ************************ TEACHER ZONE ********************************************
  **********************************************************************************
  */
-Route::group(array('before' => 'teacher'), function() {
+Route::group(array('before' => 'teacher,admin'), function() {
 
-	// Мои тесты
+	// Мои созданные тесты
 	Route::get('test/my', 'TestController@my');
 
 	// Создать тест
@@ -94,16 +89,27 @@ Route::group(array('before' => 'teacher'), function() {
 		return View::make('subject.new');
 	});
 
-	Route::group(array('before' => 'csrf'), function() {
+	// CRUD операции
+	Route::post('test/do', 'TestController@doAction');
 
-		// CRUD операции
-		Route::post('test/do', 'TestController@doAction');
+	// Создание предмета
+	Route::post('test/subject/create', 'TestController@createSubject');
 
-		// Создание предмета
-		Route::post('test/subject/create', 'TestController@createSubject');
+	Route::post('test/q/create', 'QuestionController@create');
 
-		Route::post('test/q/create', 'QuestionController@create');
-
-	});
-	
 });
+
+/**********************************************************************************
+ ************************ ADMIN ZONE **********************************************
+ **********************************************************************************
+ */
+Route::when('admin/*', 'admin');
+
+// Список пользователей
+Route::get('admin/people', 'AdminController@people');
+
+// Редактировать юзера
+Route::get('admin/edit/{user_id}', 'AdminController@edit');
+
+// Обновить данные юзера
+Route::post('admin/user/update', 'AdminController@update');

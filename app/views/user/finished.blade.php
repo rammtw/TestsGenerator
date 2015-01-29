@@ -21,7 +21,7 @@
     <div class="jumbotron">
         <div class="row">
             @if(!empty($user_tests))
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>№ п/п</th>

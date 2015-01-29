@@ -35,13 +35,13 @@
                     @if(User::isAdmin())
                         <li class="{{ Request::is('admin/people') ? 'active' : '' }}"><a href="/admin/people">Админ панель</a></li>
                     @endif
-                    @if(User::isTeacher())
+                    @if(User::isTeacher() || User::isAdmin())
                         <li class="{{ Request::is('test/my') ? 'active' : '' }}"><a href="/test/my">Тесты</a></li>
                     @endif
                     <li class="dropdown">
                         <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Моё<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li><a tabindex="-1" href="/subject/all">Все тесты</a></li>
+                            <li><a tabindex="-1" href="/test/subject/all">Все тесты</a></li>
                             <li><a tabindex="-1" href="/u/finished">Пройденные тесты</a></li>
                             <li><a tabindex="-1" href="#">Действие 3</a></li>
                             <li class="divider"></li>
@@ -68,6 +68,13 @@
     @section('scripts')
         <script type="text/javascript" src="../../js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="../../js/bootstrap-dropdown.js"></script>
+        <script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        </script>
     @show
 
     @yield('script')

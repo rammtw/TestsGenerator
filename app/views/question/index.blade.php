@@ -1,7 +1,7 @@
 @extends('layouts.interface')
 
 @section('title')
-    Тестирование
+    {{ $question->title }}
 @stop
 
 @section('content')

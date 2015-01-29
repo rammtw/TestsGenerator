@@ -8,14 +8,14 @@ class PreparedQuestion extends Eloquent {
 	 * Подготавливает вопросы, занося их в отдельную таблицу
 	 */
 	public function prepare($test_id) {
-		$test = Test::get($test_id);
+		$questions_count = Test::find($test_id)->pluck('questions_count');
 
 		$ut = new UserTest;
 		$id = $ut->make($test_id);
 
 		Session::put('cur_test', $id);
 
-		$question_ids = Question::where('test_id', '=', $test_id)->select('id')->take($test['questions_count'])->get();
+		$question_ids = Question::where('test_id', '=', $test_id)->select('id')->take($questions_count)->get();
 
 		foreach ($question_ids as $value) {
 

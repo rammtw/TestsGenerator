@@ -40,12 +40,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->belongsTo('Role');
 	}
 
-	public static function isStudent() {
-		if(Auth::check()) {
-			return Auth::user()->role_id === '1' ? true : false;
-		}
-	}
-
 	public static function isTeacher() {
 		if(Auth::check()) {
 			return Auth::user()->role_id === '2' ? true : false;
@@ -64,7 +58,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		/* Текущая дата */
 		$this->register_date = date('Y-m-d H:i:s');
 		/* По умолчанию регистрируется студент */
-		$this->role = 1;
+		$this->role_id = 1;
 
 		$this->save();
 

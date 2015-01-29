@@ -5,7 +5,7 @@ class TestController extends BaseController {
 	/* 
      * Страница информации
 	 */
-	public function info($test_id) {
+	public function index($test_id) {
 		$test = Test::find($test_id);
 
 		if(!$test){
@@ -14,7 +14,7 @@ class TestController extends BaseController {
 
 		Session::flash('test_id', $test->id);
 
-		return View::make('test.info', array('test' => $test));
+		return View::make('test.index', array('test' => $test));
 	}
 
 	public function build() {
@@ -65,7 +65,7 @@ class TestController extends BaseController {
 	}
 
 	public function edit($id) {
-		$test = Test::get($id);
+		$test = Test::find($id);
 		$subjects = Subject::getList();
 
 		return View::make('test.edit', array('test' => $test, 'subjects' => $subjects));

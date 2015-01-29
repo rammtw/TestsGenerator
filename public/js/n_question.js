@@ -48,12 +48,6 @@ function doCheck(){
 $('#question-form').keyup(doCheck).focusout(doCheck);
 $('.form-horizontal').keyup(doCheck).focusout(doCheck);
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
 $('#save').click(function (){
     var data = {
         _token: "{{ csrf_token() }}",
