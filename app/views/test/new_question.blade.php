@@ -31,7 +31,7 @@
                 <div class="form-horizontal" style="display:none;">
                 	<p id="question"></p>
             		<div class="form-group r-num">
-            			<label class="col-sm-10 control-label">
+            			<label class="col-sm-11">
             				Нажмите на переключатель слева, если ответ правильный
             			</label>
             		</div>

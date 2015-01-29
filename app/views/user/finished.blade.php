@@ -24,6 +24,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>№ п/п</th>
                         <th>Название</th>
                         <th>Правильных</th>
                         <th>Не правильных</th>
@@ -32,8 +33,9 @@
                         <th>Дата окончания</th>
                     </tr>
                 </thead>
-                @foreach ($tests as $test)
+                @foreach ($tests as $key => $test)
                     <tr class="clickableRow" style="cursor:pointer;" href="/u/result/{{ $test->id }}">
+                        <td>{{ $key+1 }}</td>
                         <td>{{ $test->name }}</td>
                         <td class="text-success">{{ $test->total_correct }}</td>
                         <td class="text-danger">{{ $test->total_incorrect }}</td>

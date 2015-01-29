@@ -18,7 +18,7 @@ class TestController extends BaseController {
 	}
 
 	public function build() {
-		$subjects = Test::getSubjects();
+		$subjects = Subject::getList();
 
 		return View::make('test.new', array('subjects' => $subjects));
 	}
@@ -66,7 +66,7 @@ class TestController extends BaseController {
 
 	public function edit($id) {
 		$test = Test::get($id);
-		$subjects = Test::getSubjects();
+		$subjects = Subject::getList();
 
 		return View::make('test.edit', array('test' => $test, 'subjects' => $subjects));
 	}
@@ -96,11 +96,17 @@ class TestController extends BaseController {
 	}
 
 	public function createSubject() {
-		$test = new Test;
-		$test->fill(Input::all());
-		$test->createSubject();
+		$subject = new Subject;
+		$subject->fill(Input::all());
+		$subject->make();
 
 		return Redirect::to('test/subject/new')->with('message', 'Сохранено!');
+	}
+
+	public function allSubjects() {
+		$subjects = Subject::all();
+
+		return View::make('subject.all', array('subjects' => $subjects));
 	}
 
 }

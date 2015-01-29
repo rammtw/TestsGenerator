@@ -30,14 +30,24 @@
     <div class="container">
         <div class="header">
             @section('menu')
-                <ul class="nav nav-pills pull-right">
-                    <li class="active"><a href="/">Главная</a></li>
+                <ul class="nav nav-pills pull-right" role="navigation">
+                    <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Главная</a></li>
                     @if(User::isAdmin())
-                        <li><a href="/admin/people">Админ панель</a></li>
+                        <li class="{{ Request::is('admin/people') ? 'active' : '' }}"><a href="/admin/people">Админ панель</a></li>
                     @endif
                     @if(User::isTeacher())
-                        <li><a href="/test/my">Тесты</a></li>
+                        <li class="{{ Request::is('test/my') ? 'active' : '' }}"><a href="/test/my">Тесты</a></li>
                     @endif
+                    <li class="dropdown">
+                        <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Моё<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                            <li><a tabindex="-1" href="/subject/all">Все тесты</a></li>
+                            <li><a tabindex="-1" href="/u/finished">Пройденные тесты</a></li>
+                            <li><a tabindex="-1" href="#">Действие 3</a></li>
+                            <li class="divider"></li>
+                            <li><a tabindex="-1" href="#">Действие 4</a></li>
+                        </ul>
+                    </li>
                     @if(Auth::check())
                         <li><a href="/logout">Выйти</a></li>
                     @endif
@@ -57,6 +67,7 @@
 
     @section('scripts')
         <script type="text/javascript" src="../../js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap-dropdown.js"></script>
     @show
 
     @yield('script')

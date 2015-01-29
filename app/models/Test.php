@@ -53,17 +53,6 @@ class Test extends Eloquent {
 		$row = Test::where('id', '=', $this->id)->delete();
 	}
 
-	public static function getSubjects() {
-		$subjects = DB::table('subjects')->lists('name','id');
-
-		return $subjects;
-	}
-
-	public function createSubject() {
-		DB::table('subjects')
-            ->insert(array('name' => $this->name));
-	}
-
 	public static function incQuestionCount($id) {
 		return self::where('id', '=', $id)->increment('questions_count');
 	}

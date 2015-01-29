@@ -29,8 +29,9 @@
             <div class="test-info">
                <p>Название теста: {{ $test->name }}</p>
                <p>Количество вопросов: {{ $test->questions_count }}</p>
+               <p>Количество баллов: {{ $test->max_points }}</p>
                <p>Время на тест: {{ $test->timer }}</p>
-               <button onclick="prepare({{ $test->id }})">Начать тест</button>
+               <button onclick="prepare({{ $test->id }})" class="btn btn-primary">Начать тест</button>
             </div>
     </div>
 @stop

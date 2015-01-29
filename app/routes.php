@@ -70,6 +70,8 @@ Route::group(array('before' => 'auth'), function() {
 
 });
 
+Route::get('subject/all', 'TestController@allSubjects');
+
 /**********************************************************************************
  ************************ TEACHER ZONE ********************************************
  **********************************************************************************
@@ -89,7 +91,7 @@ Route::group(array('before' => 'teacher'), function() {
 
 	// Создать предмет
 	Route::get('test/subject/new', function() {
-		return View::make('test.new_subject');
+		return View::make('subject.new');
 	});
 
 	Route::group(array('before' => 'csrf'), function() {
