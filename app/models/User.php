@@ -32,6 +32,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+	public function group() {
+		return $this->belongsTo('Group');
+	}
+
+	public function role() {
+		return $this->belongsTo('Role');
+	}
+
 	public static function isStudent() {
 		if(Auth::check()) {
 			return Auth::user()->role_id === '1' ? true : false;
@@ -63,32 +71,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->id;
 	}
 
-	public function updateData() {
-		$status = User::where('id', $this->id)
-            				->update(array('login' => $this->login, 'name' => $this->name, 'last_name' => $this->last_name, 'group_id' => $this->group_id, 'role_id' => $this->role_id));
+	public static function updateProfile($data) {
+		$user = User::find($data['id']);
+		$user->fill($data);
 
-        return $status;
-	}
-
-	public static function getRoles() {
-		$roles = DB::table('roles')->lists('type','id');
-
-		return $roles;
-	}
-
-	public static function getDataByUserId($user_id) {
-		$user = User::where('id', '=', $user_id)
-		            ->select('id', 'login', 'name', 'last_name', 'group_id', 'role_id')->first();
-
-		return $user;
-	}
-
-	public static function getPeoples() {
-		$users = User::join('roles', 'roles.id', '=', 'users.role_id')
-			            ->join('groups', 'groups.id', '=', 'users.group_id')
-			            ->select('users.id', 'users.login', 'users.name', 'users.last_name', 'groups.name as group', 'users.register_date', 'roles.type as role')->get();
-
-		return $users;
+		return $user->save();
 	}
 
 }

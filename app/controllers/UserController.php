@@ -4,6 +4,7 @@ class UserController extends BaseController {
 
 	public function register() {
 		$groups = Group::lists('name','id');
+
 		return View::make('user.register', array('groups' => $groups));
 	}
 
@@ -46,11 +47,9 @@ class UserController extends BaseController {
 	}
 
 	public function finished() {
-		$tests = Cache::remember('tests', 1, function () {
-			return UserTest::getFinished(Auth::user()->id);
-		});
+		$user_tests = UserTest::getFinished(Auth::user()->id);
 
-		return View::make('user.finished', array('tests' => $tests));
+		return View::make('user.finished', array('user_tests' => $user_tests));
 	}
 
 }

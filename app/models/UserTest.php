@@ -10,6 +10,10 @@ class UserTest extends Eloquent {
 								     5 => array(90, 100)
 								);
 
+	public function test() {
+		return $this->belongsTo('Test');
+	}
+
 	public function make($test_id) {
 		$this->user_id = Auth::user()->id;
 		$this->test_id = $test_id;
@@ -28,14 +32,6 @@ class UserTest extends Eloquent {
 
 		return UserTest::where('id', '=', $id)
 							->update(array('finished' => 1));
-	}
-
-	public static function getByHash($hash) {
-		$test_id = UserTest::where('user_id', '=', Auth::user()->id)
-								->where('hash', '=', $hash)
-								->pluck('test_id');
-
-		return $test_id;
 	}
 
 	public static function updateUserRating($id, $rating) {
@@ -85,20 +81,17 @@ class UserTest extends Eloquent {
 	}
 
 	public function setCorrect() {
-		return UserTest::where('id', '=', Session::get('cur_test'))
-							->increment('total_correct');
+		return UserTest::where('id', '=', Session::get('cur_test'))->increment('total_correct');
 	}
 
 	public function setInCorrect() {
-		return UserTest::where('id', '=', Session::get('cur_test'))
-							->increment('total_incorrect');
+		return UserTest::where('id', '=', Session::get('cur_test'))->increment('total_incorrect');
 	}
 
 	public static function getFinished($id) {
 		return UserTest::orderBy('user_tests.created_at', 'desc')
 									->where('user_tests.user_id', '=', $id)
-									->join('tests as t', 't.id', '=', 'user_tests.test_id')
-									->get(array('t.name', 'user_tests.*'));
+									->get();
 	}
 
 }

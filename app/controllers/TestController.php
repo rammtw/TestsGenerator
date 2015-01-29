@@ -6,7 +6,7 @@ class TestController extends BaseController {
      * Страница информации
 	 */
 	public function info($test_id) {
-		$test = Test::get($test_id);
+		$test = Test::find($test_id);
 
 		if(!$test){
 			App::abort(404);
@@ -24,7 +24,7 @@ class TestController extends BaseController {
 	}
 
 	public function my() {
-		$tests = Test::getAll();
+		$tests = Test::orderBy('created_date', 'DESC')->where('user_id', '=', Auth::user()->id)->get();
 
 		return View::make('test.my', array('tests' => $tests));
 	}

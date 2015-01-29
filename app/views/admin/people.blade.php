@@ -9,7 +9,7 @@
         @if(Session::has('message'))
             <p class="bg-success" style="padding:15px;">{{ Session::get('message') }}</p>
         @endif
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>id</th>
@@ -28,9 +28,9 @@
                     <td>{{ $user->login }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->last_name }}</td>
-                    <td>{{ $user->register_date }}</td>
-                    <td>{{ $user->group }}</td>
-                    <td>{{ $user->role }}</td>
+                    <td>{{ date("H:i:s d.m.Y",strtotime($user->register_date)) }}</td>
+                    <td>{{ $user->group->name }}</td>
+                    <td>{{ $user->role->type }}</td>
                     <td>
                         <img onclick="window.location.href='/admin/edit/{{ $user->id }}'" src="../../img/edit-icon.png" style="width:18px;height:18px;cursor:pointer;">
                     </td>

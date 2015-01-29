@@ -20,7 +20,7 @@
 @section('content')
     <div class="jumbotron">
         <div class="row">
-            @if(!empty($tests))
+            @if(!empty($user_tests))
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -33,15 +33,15 @@
                         <th>Дата окончания</th>
                     </tr>
                 </thead>
-                @foreach ($tests as $key => $test)
-                    <tr class="clickableRow" style="cursor:pointer;" href="/u/result/{{ $test->id }}">
+                @foreach ($user_tests as $key => $user_test)
+                    <tr class="clickableRow" style="cursor:pointer;" href="/u/result/{{ $user_test->id }}">
                         <td>{{ $key+1 }}</td>
-                        <td>{{ $test->name }}</td>
-                        <td class="text-success">{{ $test->total_correct }}</td>
-                        <td class="text-danger">{{ $test->total_incorrect }}</td>
-                        <td>{{ $test->rating }}</td>
-                        <td>{{ $test->created_at }}</td>
-                        <td>{{ $test->updated_at }}</td>
+                        <td>{{ $user_test->test->name }}</td>
+                        <td class="text-success">{{ $user_test->total_correct }}</td>
+                        <td class="text-danger">{{ $user_test->total_incorrect }}</td>
+                        <td>{{ $user_test->rating }}</td>
+                        <td>{{ date("H:i:s d.m.Y",strtotime($user_test->created_at)) }}</td>
+                        <td>{{ date("H:i:s d.m.Y",strtotime($user_test->updated_at)) }}</td>
                     </tr>
                 @endforeach
             </table>
