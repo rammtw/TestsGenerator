@@ -4,19 +4,6 @@
     Пройденные
 @stop
 
-@section('script')
-<script>
-    jQuery(document).ready(function($) {
-          $(".clickableRow").click(function() {
-                window.document.location = $(this).attr("href");
-          });
-          $(".clickableRow").hover(function (){
-                $(this).toggleClass("active");
-           });
-    });
-</script>
-@stop
-
 @section('content')
     <div class="jumbotron">
         <div class="row">
@@ -50,4 +37,15 @@
             @endif
         </div>
     </div>
+@stop
+
+@section('script')
+<script>
+    $(".clickableRow").click(function() {
+        window.document.location = $(this).attr("href");
+    });
+    $(".clickableRow").hover(function (){
+        $(this).toggleClass("active");
+    });
+</script>
 @stop

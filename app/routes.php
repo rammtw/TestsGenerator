@@ -53,6 +53,8 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('test/subject/all', 'TestController@allSubjects');
 
+	Route::get('test/subject/{subject_id}', 'TestController@bySubject');
+
 	Route::get('u/finished', 'UserController@finished');
 
 	// Страница с вопросом

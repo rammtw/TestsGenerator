@@ -27,7 +27,7 @@ class UserTest extends Eloquent {
 		$this->countTotalInTest($id);
 		$this->countUserRating($id);
 
-		Session::forget('cur_test');
+		Session::forget('user_test');
 		Session::forget('cur_prepared');
 
 		return UserTest::where('id', '=', $id)
@@ -41,7 +41,7 @@ class UserTest extends Eloquent {
     public function countUserRating($id) {
     	$points = UserTest::where('id', '=', $id)->get(array('test_id', 'total_correct'))->toArray();
 
-    	$test = Test::get($points[0]['test_id']);
+    	$test = Test::find($points[0]['test_id']);
 
     	$correct = $points[0]['total_correct'];
 
@@ -81,11 +81,11 @@ class UserTest extends Eloquent {
 	}
 
 	public function setCorrect() {
-		return UserTest::where('id', '=', Session::get('cur_test'))->increment('total_correct');
+		return UserTest::where('id', '=', Session::get('user_test'))->increment('total_correct');
 	}
 
 	public function setInCorrect() {
-		return UserTest::where('id', '=', Session::get('cur_test'))->increment('total_incorrect');
+		return UserTest::where('id', '=', Session::get('user_test'))->increment('total_incorrect');
 	}
 
 	public static function getFinished($id) {

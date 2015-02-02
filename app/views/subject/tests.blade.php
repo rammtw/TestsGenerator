@@ -1,26 +1,29 @@
 @extends('layouts.interface')
 
 @section('title')
-    Предметы
+    Список тестов
 @stop
 
 @section('content')
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <p>Предмет: {{ $subject->name }}</p>
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>№ п/п</th>
                             <th>Название</th>
-                            <th>Количество тестов</th>
+                            <th>Количество вопросов</th>
+                            <th>Количество баллов</th>
                         </tr>
                     </thead>
-                    @foreach ($subjects as $key => $subject)
-                        <tr class="clickableRow" style="cursor:pointer;" href="/test/subject/{{ $subject->id }}">
+                    @foreach ($tests as $key => $test)
+                        <tr class="clickableRow @if($test->questions_count > 0) success @else danger @endif" style="cursor:pointer;" href="/test/{{ $test->id }}">
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $subject->name }}</td>
-                            <td>{{ $subject->tests()->count() }}</td>
+                            <td>{{ $test->name }}</td>
+                            <td>{{ $test->questions_count }}</td>
+                            <td>{{ $test->max_points }}</td>
                         </tr>
                     @endforeach
                 </table>

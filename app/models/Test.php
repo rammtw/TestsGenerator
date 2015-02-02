@@ -25,7 +25,7 @@ class Test extends Eloquent {
 	}
 
 	public static function isSolved($id) {
-		$questions_count = self::find($id)->pluck('questions_count');
+		$questions_count = self::where('id', '=', $id)->pluck('questions_count');
 
 		if($questions_count > 0) {
 			return true;

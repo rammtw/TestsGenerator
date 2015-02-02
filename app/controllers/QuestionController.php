@@ -60,7 +60,7 @@ class QuestionController extends BaseController {
 	 * Страница с вопросом
 	 */
 	public function question($id) {
-		if(Session::get('cur_test') != $id ) {
+		if(Session::get('user_test') != $id ) {
 			App::abort(404);
 		}
 
@@ -70,7 +70,7 @@ class QuestionController extends BaseController {
 
 		if(!$current) {
 			$ut = new UserTest;
-			$ut->finish(Session::get('cur_test'));
+			$ut->finish(Session::get('user_test'));
 
 			return Redirect::to('u/finished');
 		}
@@ -94,9 +94,9 @@ class QuestionController extends BaseController {
 		$status = $prep->setAnswer(Input::get('a_indexes'));
 
 		if($status == true) {
-			$prep->refreshCurrent(Session::get('cur_test'));
+			$prep->refreshCurrent(Session::get('user_test'));
 
-			return Redirect::to('q/'.Session::get('cur_test'));
+			return Redirect::to('q/'.Session::get('user_test'));
 		}
 	}
 

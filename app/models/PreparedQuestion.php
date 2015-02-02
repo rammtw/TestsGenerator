@@ -13,7 +13,7 @@ class PreparedQuestion extends Eloquent {
 		$ut = new UserTest;
 		$id = $ut->make($test_id);
 
-		Session::put('cur_test', $id);
+		Session::put('user_test', $id);
 
 		$question_ids = Question::where('test_id', '=', $test_id)->select('id')->take($questions_count)->get();
 

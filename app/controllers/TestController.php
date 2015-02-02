@@ -109,4 +109,11 @@ class TestController extends BaseController {
 		return View::make('subject.all', array('subjects' => $subjects));
 	}
 
+	public function bySubject($subject_id) {
+		$subject = Subject::find($subject_id);
+		$tests = Test::where('subject_id', '=', $subject_id)->get();
+
+		return View::make('subject.tests', array('subject' => $subject, 'tests' => $tests));
+	}
+
 }
