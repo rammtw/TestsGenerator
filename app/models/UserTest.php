@@ -2,6 +2,8 @@
 
 class UserTest extends Eloquent {
 
+	public $results = array();
+
 	public $table = 'user_tests';
 
 	private static $criteria = array(2 => array(0, 49),
@@ -9,6 +11,10 @@ class UserTest extends Eloquent {
 								     4 => array(70, 89),
 								     5 => array(90, 100)
 								);
+
+	public function preparedQuestions() {
+		return $this->hasMany('PreparedQuestion');
+	}
 
 	public function test() {
 		return $this->belongsTo('Test');
@@ -69,8 +75,7 @@ class UserTest extends Eloquent {
 		foreach ($a as $key => $value) {
 			foreach ($value as $key2 => $value2) {
 				$r = Answer::where('question_id', '=', $key)
-								->where('id', '=', $value2)
-								->orWhere('answer', '=', $value2)
+								->where('answer', '=', $value2)
 								->pluck('r');
 				if($r == true)
 					$this->setCorrect();
@@ -89,9 +94,45 @@ class UserTest extends Eloquent {
 	}
 
 	public static function getFinished($id) {
-		return UserTest::orderBy('user_tests.created_at', 'desc')
-									->where('user_tests.user_id', '=', $id)
-									->get();
+		return UserTest::with('test')->orderBy('created_at', 'desc')
+										->where('finished', '=', '1')
+										->where('user_id', '=', $id)
+										->get();
+	}
+
+	public function prepareResults($user_test_id) {
+		$test_id = $this->find($user_test_id)->test_id;
+
+		$questions = Question::with(array('answers' => function($query) {
+
+		    $query->where('r', '=', '1');
+
+		}))->where('test_id', '=', $test_id)->get();
+
+		$prepared_questions = PreparedQuestion::where('user_test_id', '=', $user_test_id)->get();
+
+		/* BEST CODE EVER!!! */
+
+		foreach ($questions as $key => $question) {
+			$this->results[$key]['id'] = $question->id;
+			$this->results[$key]['title'] = $question->title;
+			$this->results[$key]['points'] = 0;
+			foreach ($question->answers as $answer) {
+				$this->results[$key]['answers'][] = $answer->answer;
+			}
+			foreach ($prepared_questions as $answers) {
+				if($question->id === $answers->question_id)
+					$this->results[$key]['user_answers'] = explode(',', $answers->a_indexes);
+			}
+		}
+
+		foreach ($this->results as $key => $result) {
+			foreach ($result['user_answers'] as $key2 => $u_answer) {
+				if(in_array($u_answer, $result['answers'])) {
+					$this->results[$key]['points'] += 1;
+				}
+			}
+		}
 	}
 
 }

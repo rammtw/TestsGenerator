@@ -7,7 +7,7 @@
 @section('content')
     <div class="jumbotron">
         <div class="row">
-            @if(!empty($user_tests))
+            @if(!$user_tests->isEmpty())
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 @foreach ($user_tests as $key => $user_test)
-                    <tr class="clickableRow" style="cursor:pointer;" href="/u/result/{{ $user_test->id }}">
+                    <tr class="clickableRow" style="cursor:pointer;" href="/u/finished/{{ $user_test->id }}">
                         <td>{{ $key+1 }}</td>
                         <td>{{ $user_test->test->name }}</td>
                         <td class="text-success">{{ $user_test->total_correct }}</td>

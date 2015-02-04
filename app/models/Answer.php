@@ -6,6 +6,10 @@ class Answer extends Eloquent {
 
 	protected $fillable = array('id', 'question_id', 'answer', 'r');
 
+	public function question() {
+		return $this->belongsTo('Question');
+	}
+
 	public function make($q_id, $answer) {
 		$this->question_id = $q_id;
 
@@ -29,7 +33,6 @@ class Answer extends Eloquent {
 			}
 		}
 		return $answers;
-
 	}
 
 	public static function shuffle(&$list) { 

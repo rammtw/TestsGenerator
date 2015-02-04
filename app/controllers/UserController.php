@@ -52,4 +52,15 @@ class UserController extends BaseController {
 		return View::make('user.finished', array('user_tests' => $user_tests));
 	}
 
+	public function finishedSingle($user_test_id) {
+		$ut = new UserTest;
+
+		$ut->prepareResults($user_test_id);
+
+		$results = $ut->results;
+		$test_name = $ut->find($user_test_id)->test->name;
+
+		return View::make('user.finished_single', array('test_name' => $test_name, 'results' => $results));
+	}
+
 }

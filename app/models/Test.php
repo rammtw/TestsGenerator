@@ -16,6 +16,14 @@ class Test extends Eloquent {
 		return $this->belongsTo('Subject');
 	}
 
+	public function questions() {
+		return $this->hasMany('Question');
+	}
+
+	public function answers() {
+		return $this->hasManyThrough('Answer', 'Question');
+	}
+
 	public function make() {
 		$this->user_id = Auth::user()->id;
 

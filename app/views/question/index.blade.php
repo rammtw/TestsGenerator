@@ -21,7 +21,7 @@
                 @foreach($answers as $key => $answer)
                     <div class="{{ $question->type }}">
                         <label>
-                            <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['id']}}" autocomplete="off"> {{$answer['answer']}}
+                            <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['answer']}}" autocomplete="off"> {{$answer['answer']}}
                         </label>
                     </div>
                 @endforeach

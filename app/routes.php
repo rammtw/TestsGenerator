@@ -57,6 +57,8 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('u/finished', 'UserController@finished');
 
+	Route::get('u/finished/{test_id}', 'UserController@finishedSingle');
+
 	// Страница с вопросом
 	Route::get('q/{id}', array('as' => 'quest', 'uses' => 'QuestionController@question'))->where(array('id' => '[0-9]+'));
 
