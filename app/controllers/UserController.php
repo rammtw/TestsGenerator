@@ -58,9 +58,10 @@ class UserController extends BaseController {
 		$ut->prepareResults($user_test_id);
 
 		$results = $ut->results;
+		$total = $ut->getTotalData($user_test_id);
 		$test_name = $ut->find($user_test_id)->test->name;
 
-		return View::make('user.finished_single', array('test_name' => $test_name, 'results' => $results));
+		return View::make('user.finished_single', array('test_name' => $test_name, 'results' => $results, 'total' => $total));
 	}
 
 }

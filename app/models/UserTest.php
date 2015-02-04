@@ -45,17 +45,12 @@ class UserTest extends Eloquent {
 	}
 
     public function countUserRating($id) {
-    	$points = UserTest::where('id', '=', $id)->get(array('test_id', 'total_correct'))->toArray();
 
-    	$test = Test::find($points[0]['test_id']);
-
-    	$correct = $points[0]['total_correct'];
-
-    	$c_per = round($correct * 100 / $test['max_points']);
+    	$percent = $this->getPercent($id);
 
     	foreach (self::$criteria as $r => $range) {
     		foreach ($range as $i => $value) {
-    			if ($i === 0 && $c_per >= $value && $c_per <= $range[$i + 1])
+    			if ($i === 0 && $percent >= $value && $percent <= $range[$i + 1])
     				$rating = $r;
     		}
     	}
@@ -100,8 +95,8 @@ class UserTest extends Eloquent {
 										->get();
 	}
 
-	public function prepareResults($user_test_id) {
-		$test_id = $this->find($user_test_id)->test_id;
+	public function prepareResults($id) {
+		$test_id = $this->find($id)->test_id;
 
 		$questions = Question::with(array('answers' => function($query) {
 
@@ -109,7 +104,7 @@ class UserTest extends Eloquent {
 
 		}))->where('test_id', '=', $test_id)->get();
 
-		$prepared_questions = PreparedQuestion::where('user_test_id', '=', $user_test_id)->get();
+		$prepared_questions = PreparedQuestion::where('user_test_id', '=', $id)->get();
 
 		/* BEST CODE EVER!!! */
 
@@ -133,6 +128,33 @@ class UserTest extends Eloquent {
 				}
 			}
 		}
+	}
+
+	public function getPercent($id) {
+		$data = $this->find($id, array('test_id', 'total_correct'));
+
+		return round($data->total_correct * 100 / $data->test->max_points);
+	}
+
+	public function getTotalData($id) {
+		$status = array(
+						'2' => 'danger',
+						'3' => 'warning',
+						'4' => 'success',
+						'5' => 'success'
+				);
+
+		$data = $this->find($id, array('test_id', 'total_correct', 'rating'));
+
+		$percent = $this->getPercent($id);
+
+		return array(
+					'max_points' => $data->test->max_points,
+					'points' => $data->total_correct,
+					'percent' => $percent,
+					'rating' => $data->rating,
+					'status' => $status[$data->rating]
+				);
 	}
 
 }
