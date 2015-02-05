@@ -100,11 +100,13 @@ class UserTest extends Eloquent {
 
 		$questions = Question::with(array('answers' => function($query) {
 
-		    $query->where('r', '=', '1');
+					    $query->where('r', '=', '1');
 
-		}))->where('test_id', '=', $test_id)->get();
+					}, 'prepared_questions' => function($query) use ($id) {
 
-		$prepared_questions = PreparedQuestion::where('user_test_id', '=', $id)->get();
+						$query->where('user_test_id', '=', $id);
+
+					}))->where('test_id', '=', $test_id)->get();
 
 		/* BEST CODE EVER!!! */
 
@@ -115,14 +117,13 @@ class UserTest extends Eloquent {
 			foreach ($question->answers as $answer) {
 				$this->results[$key]['answers'][] = $answer->answer;
 			}
-			foreach ($prepared_questions as $answers) {
-				if($question->id === $answers->question_id)
-					$this->results[$key]['user_answers'] = explode(',', $answers->a_indexes);
+			foreach ($question->prepared_questions as $answers) {
+				$this->results[$key]['user_answers'] = explode(',', $answers->a_indexes);
 			}
 		}
 
 		foreach ($this->results as $key => $result) {
-			foreach ($result['user_answers'] as $key2 => $u_answer) {
+			foreach ($result['user_answers'] as $u_answer) {
 				if(in_array($u_answer, $result['answers'])) {
 					$this->results[$key]['points'] += 1;
 				}

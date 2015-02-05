@@ -10,6 +10,10 @@ class Question extends Eloquent {
 		return $this->hasMany('Answer');
 	}
 
+	public function prepared_questions() {
+		return $this->hasMany('PreparedQuestion');
+	}
+
 	/*
 	 * Возвращает вопрос
 	 */
