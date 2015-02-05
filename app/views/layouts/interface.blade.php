@@ -43,9 +43,6 @@
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
                             <li><a tabindex="-1" href="/test/subject/all">Все тесты</a></li>
                             <li><a tabindex="-1" href="/u/finished">Пройденные тесты</a></li>
-                            <li><a tabindex="-1" href="#">Действие 3</a></li>
-                            <li class="divider"></li>
-                            <li><a tabindex="-1" href="#">Действие 4</a></li>
                         </ul>
                     </li>
                     @if(Auth::check())

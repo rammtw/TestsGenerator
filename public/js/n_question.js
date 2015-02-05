@@ -1,3 +1,7 @@
+var errors = {
+    'RIGHT_ANSWER_NOT_FOUND': 'Выберите правильный ответ!'
+}
+
 $('#type').change(function() {
     var type = $(this).val();
     switch(type){
@@ -70,8 +74,10 @@ $('#save').click(function (){
         url: "/test/q/create",
         data: data,
         success: function(data) {
-            if(data.response == 'ok') {
+            if(data.response === 'ok') {
                 $('.col-md-10').html('<button type="button" class="btn btn-primary btn-sm" onclick="location.reload();" style="margin-right:10px;">Добавить еще</button><button type="button" class="btn btn-sm" onclick="window.location.href=\'/test/my\'">Перейти к списку тестов</button>');
+            } else {
+                $('.error').show().text(errors[data.error.type]);
             }
         }
     }, "json");

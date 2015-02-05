@@ -53,9 +53,14 @@ class UserController extends BaseController {
 	}
 
 	public function finishedSingle($user_test_id) {
-		$ut = new UserTest;
+		try {
 
-		$ut->prepareResults($user_test_id);
+			$ut = new UserTest;
+			$ut->prepareResults($user_test_id);
+
+		} catch(Exception $e) {
+			App::abort(404);
+		}
 
 		$results = $ut->results;
 		$total = $ut->getTotalData($user_test_id);

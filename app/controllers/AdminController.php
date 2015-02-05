@@ -12,7 +12,10 @@ class AdminController extends BaseController {
 	}
 
 	public function edit($user_id) {
-		$user = User::find($user_id);
+		if(!$user = User::find($user_id)) {
+			App::abort(404);
+		}
+
 		$groups = Group::lists('name','id');
 		$roles = Role::lists('type','id');
 

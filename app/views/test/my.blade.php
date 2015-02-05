@@ -13,6 +13,7 @@
             <button class="btn btn-success" onclick="window.location.href='/test/new'">Новый тест</button>
             <button class="btn btn-success" onclick="window.location.href='/test/subject/new'">Новый предмет</button>
         </div>
+        @if(!$tests->isEmpty())
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -36,5 +37,8 @@
                     </td>
             @endforeach
         </table>
+        @else
+        <p>У Вас пока нет тестов.</p>
+        @endif
     </div>
 @stop

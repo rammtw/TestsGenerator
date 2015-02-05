@@ -8,6 +8,7 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                @if(!$tests->isEmpty())
                 <p>Предмет: {{ $subject->name }}</p>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -27,6 +28,9 @@
                         </tr>
                     @endforeach
                 </table>
+                @else
+                <p>Пока тестов нет.</p>
+                @endif
             </div>
         </div>
     </div>

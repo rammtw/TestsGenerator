@@ -53,7 +53,7 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('test/subject/all', 'TestController@allSubjects');
 
-	Route::get('test/subject/{subject_id}', 'TestController@bySubject');
+	Route::get('test/subject/{subject_id}', 'TestController@bySubject')->where(array('subject_id' => '[0-9]+'));
 
 	Route::get('u/finished', 'UserController@finished');
 

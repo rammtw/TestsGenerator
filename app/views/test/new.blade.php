@@ -14,6 +14,7 @@
                     @endforeach
                 </div>
             @endif
+            @if(!empty($subjects))
             <div class="col-md-6 col-md-offset-3">
                 {{ Form::open(array('action' => 'TestController@doAction')) }}
                     <div class="form-group">
@@ -27,6 +28,10 @@
                     <button type="submit" class="btn btn-success" name="action" value="create">Сохранить</button>
                 {{ Form::close() }}
             </div>
+            @else
+            <p>Создайте сначала предметы.</p>
+            <button class="btn btn-success" onclick="window.location.href='/test/subject/new'">Новый предмет</button>
+            @endif
         </div>
     </div>
 @stop

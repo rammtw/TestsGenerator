@@ -16,7 +16,7 @@
                         <label for="name">Название предмета</label>
                         <input type="text" class="form-control" name="name">
                     </div>
-                    <button type="submit" class="btn btn-default">Сохранить</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
                 {{ Form::close() }}
             </div>
         </div>

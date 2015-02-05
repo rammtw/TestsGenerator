@@ -14,6 +14,7 @@
                     @endforeach
                 </div>
             @endif
+            @if(!empty($test))
             <div class="col-md-8 col-md-offset-2">
                 {{ Form::open(array('action' => 'TestController@doAction')) }}
                     <input name="id" type="hidden" class="form-control" value="{{ $test->id }}">
@@ -30,6 +31,9 @@
                     <button type="button" class="btn btn-primary" onclick="window.location.href='/test/q/{{ $test->id }}'">Новый вопрос</button>
                 {{ Form::close() }}
             </div>
+            @else
+            <p>Тест не найден.</p>
+            @endif
         </div>
     </div>
 @stop

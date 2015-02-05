@@ -66,6 +66,7 @@ class TestController extends BaseController {
 
 	public function edit($id) {
 		$test = Test::find($id);
+
 		$subjects = Subject::getList();
 
 		return View::make('test.edit', array('test' => $test, 'subjects' => $subjects));

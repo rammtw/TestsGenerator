@@ -8,6 +8,7 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                <p class="bg-danger error" style="padding:15px;display:none;"></p>
                 <form id="question-form">
                     <div class="form-group">
                         <label for="title">Название вопроса</label>

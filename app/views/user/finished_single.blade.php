@@ -29,12 +29,10 @@
             @endforeach
             <p>Результаты</p>
             <dl class="dl-horizontal">
-              <dt>Набрано баллов</dt>
-              <dd class="text-{{ $total['status'] }}">{{ $total['points'] }} ({{ $total['percent'] }}%)</dd>
-              <dt>Необходимо</dt>
-              <dd class="text-success">{{ $total['max_points'] }}</dd>
-              <dt>Оценка</dt>
-              <dd class="text-{{ $total['status'] }}">{{ $total['rating'] }}</dd>
+                <dt>Всего баллов</dt>
+                <dd>{{ $total['points'] }} из {{ $total['max_points'] }} <span class="text-{{ $total['status'] }}">({{ $total['percent'] }}%)</span></dd>
+                <dt>Оценка</dt>
+                <dd class="text-{{ $total['status'] }}">{{ $total['rating'] }}</dd>
             </dl>
         </div>
     </div>

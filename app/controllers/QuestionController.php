@@ -6,15 +6,25 @@
 class QuestionController extends BaseController {
 
 	public function make($test_id) {
-		$test_id = Test::find($test_id)->pluck('id');
 
-		Session::flash('test_id', $test_id);
+		if(!$test = Test::find($test_id)) {
+			App::abort(404);
+		}
+
+		Session::flash('test_id', $test->id);
 
 		return View::make('question.new');
 	}
 
 	public function create() {
 		if(Request::ajax()) {
+
+			if(empty(Input::get('r_indexes'))) {
+				Session::reflash();
+
+				return Response::json(array('response' => 'error', 'error' => array('type' => 'RIGHT_ANSWER_NOT_FOUND')));
+			}
+
 			$q = new Question;
 
 			$test_id = Session::get('test_id');
