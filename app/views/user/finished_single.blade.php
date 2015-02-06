@@ -20,9 +20,11 @@
                 </ul>
                 <p class="text-info">Вы отвечали:</p>
                 <ul class="list-style">
+                @if(isset($result['user_answers']))
                     @foreach ($result['user_answers'] as $user_answer)
                         <li>{{ $user_answer }}</li>
                     @endforeach
+                @endif
                 </ul>
                 <h5>Набрано баллов: [{{ $result['points'] }}]</h5>
                 </div>

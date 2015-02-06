@@ -123,9 +123,11 @@ class UserTest extends Eloquent {
 		}
 
 		foreach ($this->results as $key => $result) {
-			foreach ($result['user_answers'] as $u_answer) {
-				if(in_array($u_answer, $result['answers'])) {
-					$this->results[$key]['points'] += 1;
+			if(isset($result['user_answers'])) {
+				foreach ($result['user_answers'] as $u_answer) {
+					if(in_array($u_answer, $result['answers'])) {
+						$this->results[$key]['points'] += 1;
+					}
 				}
 			}
 		}
