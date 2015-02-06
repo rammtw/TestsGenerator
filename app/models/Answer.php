@@ -10,8 +10,8 @@ class Answer extends Eloquent {
 		return $this->belongsTo('Question');
 	}
 
-	public function make($q_id, $answer) {
-		$this->question_id = $q_id;
+	public function make($question_id, $answer) {
+		$this->question_id = $question_id;
 
 		$this->answer = $answer;
 
@@ -20,9 +20,29 @@ class Answer extends Eloquent {
 		return $this->id;
 	}
 
-	public static function setRight($index) {
-		return Answer::where('id', '=', $index)
-						->update(array('r' => 1));
+	public function updateCorrect($question_id, $answers, $r_indexes) {
+		foreach ($answers as $key => $answer) {
+
+			$a = new Answer;
+
+			$id = $a->make($question_id, $answer);
+
+			if(in_array($key, $r_indexes)) {
+
+				$status = $this->setCorrect($id);
+
+				Test::incAnswerPoints();
+
+			}
+		}
+	}
+
+	public function setCorrect($id) {
+		$answer = $this->find($id);
+
+		$answer->r = 1;
+
+		$answer->save();
 	}
 
 	public static function format(&$answers, $type) {

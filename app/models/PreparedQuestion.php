@@ -28,6 +28,8 @@ class PreparedQuestion extends Eloquent {
 			PreparedQuestion::insert($data);
 		}
 
+		$this->setCurrent($id);
+
 		return $id;
 	}
 

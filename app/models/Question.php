@@ -29,11 +29,11 @@ class Question extends Eloquent {
 		return json_decode($answers, true);
 	}
 
-	public function make($test_id) {
-		$this->test_id = $test_id;
+	public function make() {
+		$this->test_id = Session::get('test_id');
 
 		if($this->save()) {
-			Test::incQuestionCount($test_id);
+			Test::incQuestionCount();
 		}
 
 		return $this->id;

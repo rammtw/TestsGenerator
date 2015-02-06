@@ -27,22 +27,12 @@ class QuestionController extends BaseController {
 
 			$q = new Question;
 
-			$test_id = Session::get('test_id');
-
 			$q->fill(Input::all());
-			$q_id = $q->make($test_id);
+			$q_id = $q->make();
 
-			foreach (Input::get('answers') as $key => $answer) {
-
-				$a = new Answer;
-				$a_id = $a->make($q_id, $answer);
-
-				if(in_array($key, Input::get('r_indexes'))) {
-					$status = Answer::setRight($a_id);
-					Test::incAnswerPoints($test_id);
-				}
-
-			}
+			$a = new Answer;
+			$a->updateCorrect($q_id, Input::get('answers'), Input::get('r_indexes'));
+			
 			return Response::json(array('response' => 'ok'));
 		}
 	}
@@ -60,7 +50,6 @@ class QuestionController extends BaseController {
 			$prep = new PreparedQuestion;
 
 			$id = $prep->prepare(Session::get('test_id'));
-			$prep->setCurrent($id);
 
 			return Response::json(array('response' => 'ok', 'id' => $id));
 		}

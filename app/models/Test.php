@@ -49,11 +49,11 @@ class Test extends Eloquent {
 		$row = Test::where('id', '=', $this->id)->delete();
 	}
 
-	public static function incQuestionCount($id) {
-		return self::where('id', '=', $id)->increment('questions_count');
+	public static function incQuestionCount() {
+		return self::where('id', '=', Session::get('test_id'))->increment('questions_count');
 	}
 
-	public static function incAnswerPoints($id) {
-		return self::where('id', '=', $id)->increment('max_points');
+	public static function incAnswerPoints() {
+		return self::where('id', '=', Session::get('test_id'))->increment('max_points');
 	}
 }
