@@ -6,11 +6,12 @@ class UserTest extends Eloquent {
 
 	public $table = 'user_tests';
 
-	private static $criteria = array(2 => array(0, 49),
-								     3 => array(50, 69),
-								     4 => array(70, 89),
-								     5 => array(90, 100)
-								);
+	private static $criteria = array(
+                                        2 => array(0, 49),
+                                        3 => array(50, 69),
+                                        4 => array(70, 89),
+                                        5 => array(90, 100)
+                                   );
 
 	public function preparedQuestions() {
 		return $this->hasMany('PreparedQuestion');
@@ -68,7 +69,7 @@ class UserTest extends Eloquent {
 		}
 
 		foreach ($a as $key => $value) {
-			foreach ($value as $key2 => $value2) {
+			foreach ($value as $value2) {
 				$r = Answer::where('question_id', '=', $key)
 								->where('answer', '=', $value2)
 								->pluck('r');
@@ -90,9 +91,9 @@ class UserTest extends Eloquent {
 
 	public static function getFinished($id) {
 		return UserTest::with('test')->orderBy('created_at', 'desc')
-										->where('finished', '=', '1')
-										->where('user_id', '=', $id)
-										->get();
+                                                    ->where('finished', '=', '1')
+                                                    ->where('user_id', '=', $id)
+                                                    ->get();
 	}
 
 	public function prepareResults($id) {
@@ -108,32 +109,40 @@ class UserTest extends Eloquent {
 
 					}))->where('test_id', '=', $test_id)->get();
 
-		/* BEST CODE EVER!!! */
-
-		foreach ($questions as $key => $question) {
-			$this->results[$key]['id'] = $question->id;
-			$this->results[$key]['title'] = $question->title;
-			$this->results[$key]['points'] = 0;
-			foreach ($question->answers as $answer) {
-				$this->results[$key]['answers'][] = $answer->answer;
-			}
-			foreach ($question->prepared_questions as $answers) {
-				$this->results[$key]['user_answers'] = explode(',', $answers->a_indexes);
-			}
-		}
-
-		foreach ($this->results as $key => $result) {
-			if(isset($result['user_answers'])) {
-				foreach ($result['user_answers'] as $u_answer) {
-					if(in_array($u_answer, $result['answers'])) {
-						$this->results[$key]['points'] += 1;
-					}
-				}
-			}
-		}
+		$this->eachResults($questions);
 	}
 
-	public function getPercent($id) {
+        private function eachResults($questions) {
+            /* BEST CODE EVER!!! */
+
+            foreach ($questions as $key => $question) {
+                    $this->results[$key]['id'] = $question->id;
+                    $this->results[$key]['title'] = $question->title;
+                    $this->results[$key]['points'] = 0;
+                    foreach ($question->answers as $answer) {
+                            $this->results[$key]['answers'][] = $answer->answer;
+                    }
+                    foreach ($question->prepared_questions as $answers) {
+                            $this->results[$key]['user_answers'] = explode(',', $answers->a_indexes);
+                    }
+            }
+
+            $this->countPoints();
+        }
+
+        private function countPoints() {
+            foreach ($this->results as $key => $result) {
+                    if(isset($result['user_answers'])) {
+                            foreach ($result['user_answers'] as $u_answer) {
+                                if(in_array($u_answer, $result['answers'])) {
+                                        $this->results[$key]['points'] += 1;
+                                }
+                            }
+                    }
+            }
+        }
+
+        public function getPercent($id) {
 		$data = $this->find($id, array('test_id', 'total_correct'));
 
 		return round($data->total_correct * 100 / $data->test->max_points);
@@ -141,23 +150,23 @@ class UserTest extends Eloquent {
 
 	public function getTotalData($id) {
 		$status = array(
-						'2' => 'danger',
-						'3' => 'warning',
-						'4' => 'success',
-						'5' => 'success'
-				);
+                                '2' => 'danger',
+                                '3' => 'warning',
+                                '4' => 'success',
+                                '5' => 'success'
+                );
 
 		$data = $this->find($id, array('test_id', 'total_correct', 'rating'));
 
 		$percent = $this->getPercent($id);
 
 		return array(
-					'max_points' => $data->test->max_points,
-					'points' => $data->total_correct,
-					'percent' => $percent,
-					'rating' => $data->rating,
-					'status' => $status[$data->rating]
-				);
+                            'max_points' => $data->test->max_points,
+                            'points' => $data->total_correct,
+                            'percent' => $percent,
+                            'rating' => $data->rating,
+                            'status' => $status[$data->rating]
+                    );
 	}
 
 }

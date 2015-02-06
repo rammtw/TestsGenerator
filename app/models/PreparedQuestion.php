@@ -33,12 +33,12 @@ class PreparedQuestion extends Eloquent {
 		return $id;
 	}
 
-	public function getRand($id) {
+	public function getRand($user_test_id) {
 		$id = PreparedQuestion::orderBy(DB::raw('RAND()'))
 											->whereNull('a_indexes')
 											->where('current', '=', 0)
 											->where('user_id', '=', Auth::user()->id)
-											->where('user_test_id', '=', $id)
+											->where('user_test_id', '=', $user_test_id)
 											->pluck('id');
 
 		return $id;
@@ -62,8 +62,8 @@ class PreparedQuestion extends Eloquent {
 		return $current[0];
 	}
 
-	public function setCurrent($id) {
-		$id = $this->getRand($id);
+	public function setCurrent($user_test_id) {
+		$id = $this->getRand($user_test_id);
 
 		return PreparedQuestion::where('id', '=', $id)->update(array('current' => 1));
 	}

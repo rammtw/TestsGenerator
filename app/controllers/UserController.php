@@ -21,8 +21,7 @@ class UserController extends BaseController {
 		$user->fill(Input::all());
 		$id = $user->register();
 
-		$user = User::find($id);
-		Auth::login($user, true);
+		Auth::login(User::find($id), true);
 
 		return Redirect::to('/');
 	}

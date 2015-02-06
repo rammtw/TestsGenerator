@@ -29,7 +29,7 @@ class Answer extends Eloquent {
 
 			if(in_array($key, $r_indexes)) {
 
-				$status = $this->setCorrect($id);
+				$this->setCorrect($id);
 
 				Test::incAnswerPoints();
 

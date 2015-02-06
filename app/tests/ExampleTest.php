@@ -27,8 +27,6 @@ class ExampleTest extends TestCase {
 		$response = $this->call('POST', 'test/q/create', $parameters);
 
         $this->assertResponseOk();
-
-    	$this->client->getResponse()->isOk();
 	}
 
 

@@ -42,11 +42,11 @@ class Test extends Eloquent {
 	}
 
 	public function updateData() {
-		$row = Test::where('id', '=', $this->id)->update(array('name' => $this->name, 'subject_id' => $this->subject_id));
+		Test::where('id', '=', $this->id)->update(array('name' => $this->name, 'subject_id' => $this->subject_id));
 	}
 
 	public function delete() {
-		$row = Test::where('id', '=', $this->id)->delete();
+		Test::where('id', '=', $this->id)->delete();
 	}
 
 	public static function incQuestionCount() {
