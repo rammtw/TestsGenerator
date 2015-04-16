@@ -8,6 +8,7 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
+                @if(!$subjects->isEmpty())
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -24,6 +25,9 @@
                         </tr>
                     @endforeach
                 </table>
+                @else
+                <p>Пока предметов нет.</p>
+                @endif
             </div>
         </div>
     </div>
