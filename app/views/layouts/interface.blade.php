@@ -51,7 +51,7 @@
                 </ul>
             @show
 
-            <h3 class="text-muted">@yield('logo', 'Project')</h3>
+            <h3 class="text-muted">@yield('logo', 'Let\'s Test')</h3>
         </div>
 
         @yield('content')

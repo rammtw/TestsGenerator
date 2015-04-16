@@ -10,7 +10,6 @@
                <p>Название теста: {{ $test->name }}</p>
                <p>Количество вопросов: {{ $test->questions_count }}</p>
                <p>Количество баллов: {{ $test->max_points }}</p>
-               <p>Время на тест: {{ $test->timer }}</p>
                <button id="begin-test" class="btn btn-primary">Начать тест</button>
             </div>
     </div>

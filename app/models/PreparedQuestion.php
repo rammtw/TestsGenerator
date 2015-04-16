@@ -94,4 +94,12 @@ class PreparedQuestion extends Eloquent {
 									->where('user_test_id', '=', $id)->lists('a_indexes', 'question_id');
 	}
 
+	public function getQuestionsCount($user_test_id) {
+		return PreparedQuestion::where('user_test_id', '=', $user_test_id)->count();
+	}
+
+	public function getAnsweredCount($user_test_id) {
+		return PreparedQuestion::whereNotNull('a_indexes')->where('user_test_id', '=', $user_test_id)->count();
+	}
+
 }

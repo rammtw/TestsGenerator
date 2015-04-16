@@ -2,27 +2,27 @@
 
 @section('content')
     <div class="jumbotron">
-        <h1>TestBuilder</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <h1>Let's Test</h1>
+        <p class="lead">Эффективное приложение для проверки знаний.</p>
         @if(!Auth::check())
-          <p><a class="btn btn-lg btn-success sign" href="/sign" role="button">Sign up today</a></p>
+          <p><a class="btn btn-lg btn-success sign" href="/sign" role="button">Войти</a></p>
         @endif
     </div>
     <div class="row marketing">
         <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+            <h4>Создание групп</h4>
+            <p>Возможность разделять студентов на группы.</p>
 
-            <h4>Subheading</h4>
-            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+            <h4>Статистика</h4>
+            <p>Результаты тестов сохраняются в профиле.</p>
 
-            <h4>Subheading</h4>
-            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+            <h4>Разделение ролей</h4>
+            <p>Управляние тестами, просмотр статистики и дополнительные возможности через профиль администратора.</p>
         </div>
 
         <div class="col-lg-6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+            <h4>Безопасность</h4>
+            <p>Ответы хранятся в базе данных, результат расчитывается после каждого ответа.</p>
 
             <h4>Subheading</h4>
             <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>

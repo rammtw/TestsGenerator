@@ -74,13 +74,17 @@ class QuestionController extends BaseController {
 			return Redirect::to('u/finished');
 		}
 
+		$count = array();
+		$count['all'] = $prep->getQuestionsCount($id);
+		$count['current'] = $prep->getAnsweredCount($id) + 1;
+
 		$question = Question::get($current['question_id']);
 		$answers = Question::getAnswers($current['question_id']);
 
 		Answer::shuffle($answers);
 		Answer::format($answers, $question['type']);
 
-		return View::make('question.index', array('question' => $question, 'answers' => $answers));
+		return View::make('question.index', array('question' => $question, 'answers' => $answers, 'count' => $count));
 	}
 
 	public function setAnswer() {
