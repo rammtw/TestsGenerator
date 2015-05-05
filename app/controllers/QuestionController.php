@@ -25,6 +25,12 @@ class QuestionController extends BaseController {
 				return Response::json(array('response' => 'error', 'error' => array('type' => 'RIGHT_ANSWER_NOT_FOUND')));
 			}
 
+			if(preg_grep('(\|)', Input::get('answers'))) {
+				Session::reflash();
+
+				return Response::json(array('response' => 'error', 'error' => array('type' => 'ILLEGAL_CHARACTERS')));
+			}
+
 			$q = new Question;
 
 			$q->fill(Input::all());

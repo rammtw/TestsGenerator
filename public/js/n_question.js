@@ -1,5 +1,6 @@
 var errors = {
-    'RIGHT_ANSWER_NOT_FOUND': 'Выберите правильный ответ!'
+    'RIGHT_ANSWER_NOT_FOUND': 'Выберите правильный ответ!',
+    'ILLEGAL_CHARACTERS': 'Символ | запрещен!'
 }
 
 $('#type').change(function() {
