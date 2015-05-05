@@ -80,7 +80,7 @@ class PreparedQuestion extends Eloquent {
 	}
 
 	public function setAnswer($a_indexes) {
-		$answers = implode(',', $a_indexes);
+		$answers = implode('|', $a_indexes);
 
 		$status = PreparedQuestion::where('user_id', '=', Auth::user()->id)
 										->where('id', '=', Session::get('cur_prepared.id'))

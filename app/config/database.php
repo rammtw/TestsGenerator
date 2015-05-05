@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'tests',
 			'username'  => 'root',
-			'password'  => 'вуьщ123',
+			'password'  => 'demo123',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
 			'prefix'    => '',

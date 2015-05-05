@@ -65,7 +65,7 @@ class UserTest extends Eloquent {
 		$answered = $prep->getAnswered($id);
 
 		foreach ($answered as $key => $answer) {
-			$a[$key] = explode(',', $answer);
+			$a[$key] = explode('|', $answer); // Эксплоудим ответы, т.к они хранятся через |
 		}
 
 		foreach ($a as $key => $value) {

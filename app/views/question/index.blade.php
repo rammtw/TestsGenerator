@@ -18,11 +18,11 @@
                 <p>Вопрос {{ $count['current']}} из {{ $count['all'] }}</p>
 
                 {{ Form::open(array('action' => 'QuestionController@setAnswer')) }}
-                <p>{{ $question->title }}</p>
+                <p>{{{ $question->title }}}</p>
 
                 @foreach($answers as $key => $answer)
                     <div class="form-group">
-                        <input type="{{ $question->type }}" name="a_indexes[]" value="{{$answer['answer']}}" autocomplete="off"> {{$answer['answer']}}
+                        <input type="{{ $question->type }}" name="a_indexes[]" value="{{{$answer['answer']}}}" autocomplete="off"> {{{ $answer['answer'] }}}
                     </div>
                 @endforeach
 

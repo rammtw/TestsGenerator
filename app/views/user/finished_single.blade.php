@@ -11,18 +11,18 @@
             <p>Вопросы:</p>
             @foreach ($results as $key => $result)
                 <div style="margin-bottom:20px;padding:20px;background-color:#E9E9E9;">
-                <p>{{ $key+1 }}. {{ $result['title'] }}</p>
+                <p>{{ $key+1 }}. {{{ $result['title'] }}}</p>
                 <p class="text-success">Правильные ответы:</p>
                 <ul class="list-style">
                     @foreach ($result['answers'] as $answer)
-                        <li>{{ $answer }}</li>
+                        <li>{{{ $answer }}}</li>
                     @endforeach
                 </ul>
                 <p class="text-info">Вы отвечали:</p>
                 <ul class="list-style">
                 @if(isset($result['user_answers']))
                     @foreach ($result['user_answers'] as $user_answer)
-                        <li>{{ $user_answer }}</li>
+                        <li>{{{ $user_answer }}}</li>
                     @endforeach
                 @endif
                 </ul>
