@@ -32,3 +32,11 @@
         </div>
     </div>
 @stop
+
+@section('script')
+<script>
+    $('form').submit(function(){
+        $(this).find('button').attr('disabled', 'disabled');
+    });
+</script>
+@stop
