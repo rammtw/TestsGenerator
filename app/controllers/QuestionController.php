@@ -43,6 +43,21 @@ class QuestionController extends BaseController {
 		}
 	}
 
+	public function edit($id) {
+
+		$question = Question::find($id);
+
+		return View::make('question.edit', array('question' => $question));
+	}
+
+	public function update() {
+
+	}
+
+	public function delete() {
+
+	}
+
 	/*
      * AJAX request, JSONresponse: id 
 	 */

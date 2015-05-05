@@ -93,6 +93,12 @@ Route::group(array('before' => 'teacher,admin'), function() {
 		return View::make('subject.new');
 	});
 
+	// Редактировать вопрос
+	Route::get('q/edit/{question_id}', 'QuestionController@edit');
+
+	// Обновить вопрос
+	Route::post('q/update/', 'QuestionController@update');
+
 	// CRUD операции
 	Route::post('test/do', 'TestController@doAction');
 
